@@ -33,7 +33,7 @@ export default function DeleteForm() {
     try {
       await deleteTurma(selectedTurma.value);
 
-      // 🔥 Atualiza lista após deletar
+      // Atualiza lista após deletar
       setTurmas((prev) =>
         prev.filter((t) => t.value !== selectedTurma.value)
       );

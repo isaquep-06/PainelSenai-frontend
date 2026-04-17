@@ -6,7 +6,7 @@ function Anuncio({ midia, onNext }) {
   useEffect(() => {
     if (!midia) return;
 
-    // 🔥 SE FOR IMAGEM → troca depois de X tempo
+    // SE FOR IMAGEM → troca depois de X tempo
     if (midia.type === "image") {
       const timer = setTimeout(() => {
         onNext();
@@ -15,7 +15,7 @@ function Anuncio({ midia, onNext }) {
       return () => clearTimeout(timer);
     }
 
-    // 🔥 SE FOR VIDEO → espera terminar
+    // SE FOR VIDEO → espera terminar
     if (midia.type === "video") {
       const video = videoRef.current;
 

@@ -52,7 +52,7 @@ function Dashboard() {
     load();
   }, [turno]);
 
-  // 🔥 DIVISÃO INTELIGENTE DAS TABELAS
+  //  DIVISÃO INTELIGENTE DAS TABELAS
   const metade = Math.ceil(data.length / 2);
 
   const tabelaEsquerda = data.slice(0, metade);
@@ -64,7 +64,7 @@ function Dashboard() {
 
       <S.MainContent>
 
-        {/* 📊 TABELAS LADO A LADO */}
+        {/*  TABELAS LADO A LADO */}
         <S.TablesContainer style={{ display: "flex", gap: "16px" }}>
 
           {/* ESQUERDA (prioriza se ímpar) */}
@@ -75,7 +75,7 @@ function Dashboard() {
 
         </S.TablesContainer>
 
-        {/* 🎬 LADO DIREITO */}
+        {/*  LADO DIREITO */}
         <S.RightSide>
 
           <S.VideoContainer>

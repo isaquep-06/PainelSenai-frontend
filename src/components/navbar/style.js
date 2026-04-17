@@ -9,7 +9,7 @@ export const Nav = styled.nav`
   padding: 5px 32px;
   margin-bottom: 5px;
   
-  background: #ffffff; /* 👈 branco */
+  background: #ffffff; 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
   font-family: 'Inter', sans-serif;

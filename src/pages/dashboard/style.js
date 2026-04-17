@@ -9,14 +9,14 @@ export const Body = styled.div`
   flex-direction: column;
 `;
 
-/* 🔥 ÁREA PRINCIPAL */
+/* ÁREA PRINCIPAL */
 export const MainContent = styled.div`
   flex: 1;
   display: flex;
   gap: 8px;
 `;
 
-/* 📊 TABELAS */
+/* TABELAS */
 export const TablesContainer = styled.div`
   flex: 1.2;
   display: flex;
@@ -27,7 +27,7 @@ export const TablesContainer = styled.div`
   }
 `;
 
-/* 🎬 LADO DIREITO */
+/* LADO DIREITO */
 export const RightSide = styled.div`
   flex: 1;
   display: flex;
@@ -36,7 +36,7 @@ export const RightSide = styled.div`
   max-height: 92vh;
 `;
 
-/* 🎥 VIDEO / ANÚNCIO */
+/* VIDEO / ANÚNCIO */
 export const VideoContainer = styled.div`
 
   display: flex;
@@ -58,7 +58,7 @@ export const VideoContainer = styled.div`
   }
 `;
 
-/* 📱 QR CODE */
+/* QR CODE */
 export const QrContainer = styled.div`
   flex: 1;
   background: #a7f3d0;

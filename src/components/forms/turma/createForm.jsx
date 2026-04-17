@@ -17,8 +17,6 @@ import { createSchema } from '../../../schemas/turmaSchema'
 // Services
 import { createTurma } from "../../../services/turmaService";
 
-// Notificação toast
-import { toast } from "react-toastify";
 
 
 

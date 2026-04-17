@@ -5,24 +5,19 @@ import CreateForm from "../../components/forms/turma/createForm";
 import UpdateForm from "../../components/forms/turma/updateForm";
 import DeleteForm from "../../components/forms/turma/deleteForm";
 
+import CreateFormSala from "../../components/forms/sala/createForm";
 // Navbar
 import NavBarForm from "../../components/navBarForm/navbarForm";
+import UpdateFormSala from "../../components/forms/sala/updateForm";
+import DeleteFormSala from "../../components/forms/sala/deleteForm";
 
 function AtualizarDados() {
   const [mode, setMode] = useState("create");
 
   return (
-    <div>
-
-      {/* 🔥 Navbar controla o modo */}
-      <NavBarForm mode={mode} setMode={setMode} />
-
-      {/* 🔥 Renderização dinâmica */}
-      {mode === "create" && <CreateForm />}
-      {mode === "update" && <UpdateForm />}
-      {mode === "delete" && <DeleteForm />}
-
-    </div>
+    <>
+      <UpdateFormSala />
+    </>
   );
 }
 

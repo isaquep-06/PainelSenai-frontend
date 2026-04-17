@@ -14,7 +14,6 @@ export const MainContent = styled.div`
   flex: 1;
   display: flex;
   gap: 8px;
-  padding: 8px;
 `;
 
 /* 📊 TABELAS */

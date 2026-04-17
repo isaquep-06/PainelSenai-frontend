@@ -18,14 +18,18 @@ export const TablesContainer = styled.div`
 
 export const DivTudo = styled.div`
   flex: 1;
+  height: 100%; /* 🔥 1. Garante que a div externa ocupe toda a altura do container pai */
 `;
 
 export const TableWrapper = styled.div`
   width: 100%;
+  height: 100%; /* 🔥 2. Repassa essa altura total para o wrapper da tabela */
+  background-color: white; /* Mantém o fundo branco caso falte alguma coisa */
 `;
 
 export const Table = styled.table`
   width: 100%;
+  height: 100%; /* 🔥 3. A MÁGICA: Faz a tabela esticar e preencher todo o espaço vazio */
   border-collapse: collapse;
   font-family: 'Inter', sans-serif;
 `;
@@ -33,6 +37,7 @@ export const Table = styled.table`
 export const Thead = styled.thead`
   background: #1e3a8a;
   color: white;
+  height: 1px; /* 🔥 4. Trava a altura do cabeçalho para que apenas as linhas da tabela (Tbody) estiquem */
 
   th {
     font-size: clamp(14px, 1vw, 20px);
@@ -44,6 +49,7 @@ export const Thead = styled.thead`
 export const Tbody = styled.tbody`
 tr {
   text-align: left;
+  background-color: white;
 }
   tr:nth-child(even) {
     background: #e5e7eb;

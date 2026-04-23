@@ -7,16 +7,16 @@ import atualizarImg from '../../assets/loading-arrow.png'
 import deleteImg from '../../assets/delete.png'
 import logo from '../../assets/logo_senai.svg'
 
-export default function NavBarForm({ mode, setMode }) {
+export default function NavBarForm({ mode, setMode, name }) {
 
   const handleModeChange = (newMode) => {
     setMode(newMode);
   };
 
   const modeLabels = {
-    create: "Criar Turma",
-    update: "Editar Turma",
-    delete: "Remover Turma",
+    create: `Criar ${name}`,
+    update: `Editar ${name}`,
+    delete: `Remover ${name}`,
   };
 
   return (
@@ -26,7 +26,7 @@ export default function NavBarForm({ mode, setMode }) {
           active={mode === 'create'}
           onClick={() => handleModeChange('create')}
         >
-          Criar Turma
+          {`Criar ${name}`}
           <img src={adicionarImg} alt="" />
 
         </S.NavItem>
@@ -34,7 +34,7 @@ export default function NavBarForm({ mode, setMode }) {
           active={mode === 'update'}
           onClick={() => handleModeChange('update')}
         >
-          Atualizar Turma
+          {`Atualizar ${name}`}
           <img src={atualizarImg} alt="" />
 
         </S.NavItem>
@@ -42,7 +42,7 @@ export default function NavBarForm({ mode, setMode }) {
           active={mode === 'delete'}
           onClick={() => handleModeChange('delete')}
         >
-          Deletar Turma
+          {`Remover ${name}`}
           <img src={deleteImg} alt="" />
 
         </S.NavItem>

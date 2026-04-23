@@ -1,168 +1,110 @@
 import { useEffect, useState } from "react";
-import { useForm, Controller, useWatch } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup";  
+import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 
+// Style
+import * as S from '../../../styles/formsStyles/style'
+
+// Schemas
+import { updateSchemaSala } from "../../../schemas/salaSchemas";
+
+// Services
+import { updateSala } from "../../../services/salaServices";
+
 // Components
-import SelectSalas from "../ui/selectSalas";
-import SelectTurnos from "../ui/selectTurnos";
 import ButtonForm from "../buttonForm/buttonForm";
+import SelectSalas from "../ui/selectSalas";
 
-// Schema
-import { updateSchema } from "../../../schemas/turmaSchema";
-
-// Service
-import { updateTurma, getTurma } from "../../../services/turmaService";
-
-export default function UpdateForm() {
-  const [turmas, setTurmas] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+export default function UpdateFormSala() {
 
   const {
-    register,
+    register, 
     handleSubmit,
     control,
-    setValue,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors }
   } = useForm({
+    resolver: yupResolver(updateSchemaSala),
     defaultValues: {
       id: null,
       name: "",
-      turno: null,
-      sala_id: null,
-    },
-    resolver: yupResolver(updateSchema),
+      type: ""
+    }
   });
 
-  // 🔹 Carregar turmas
-  useEffect(() => {
-    async function load() {
-      try {
-        const res = await getTurma();
-        const data = res || [];
-
-        const turmasAjustadas = data.map((t) => ({
-          value: t.id,
-          label: t.name || "Sem nome",
-          ...t,
-        }));
-
-        setTurmas(turmasAjustadas);
-      } catch (error) {
-        console.error("Erro ao carregar turmas:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    load();
-  }, []);
-
-  // 🔹 Observar turma selecionada
-  const selectedId = useWatch({
-    control,
-    name: "id",
-  });
-
-  // 🔹 Preencher formulário
-  useEffect(() => {
-    if (!selectedId) return;
-
-    const turmaSelecionada = turmas.find((t) => t.value === selectedId);
-
-    if (turmaSelecionada) {
-      setValue("name", turmaSelecionada.name || "");
-      setValue("turno", turmaSelecionada.turno || null);
-      setValue("sala_id", turmaSelecionada.sala_id || null);
-
-      setIsInitialLoad(true);
-      setTimeout(() => setIsInitialLoad(false), 0); // evita reset imediato
-    }
-  }, [selectedId, turmas, setValue]);
-
-  // 🔹 Observar turno e sala
-  const turno = useWatch({ control, name: "turno" });
-  const sala_id = useWatch({ control, name: "sala_id" });
-
-  // 🔹 Validar sala ao mudar turno
-  useEffect(() => {
-    if (isInitialLoad) return;
-    if (!turno || !sala_id) return;
-
-    // Aqui você poderia validar via API se quiser
-    // Por enquanto só garante reset seguro
-    setValue("sala_id", null);
-  }, [turno]);
-
-  // 🔹 Submit
   async function onSubmit(data) {
     try {
-      await updateTurma(data);
-      alert("Turma atualizada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao atualizar:", error);
-      alert("Erro ao atualizar turma");
+      await updateSala(data);
+    } catch (err) {
+      console.error("Erro ao atualizar sala:", err);
     }
   }
 
+  const optionsType = [
+    { value: "laboratorio", label: "Laboratório" },
+    { value: "comum", label: "Sala comum" },
+    { value: "especial", label: "Especial" }
+  ];
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {loading && <p>Carregando turmas...</p>}
+    <S.FormContainer>
 
-      {!loading && (
-        <Controller
-          name="id"
-          control={control}
-          render={({ field }) => (
-            <Select
-              options={turmas}
-              placeholder="Selecione a turma"
-              isClearable
-              value={
-                turmas.find((opt) => opt.value === field.value) || null
-              }
-              onChange={(selected) =>
-                field.onChange(selected?.value || null)
-              }
-            />
-          )}
-        />
-      )}
+      <S.Header>
+        <h2>Atualizar sala</h2>
+        <span>Edite os dados da sala selecionada</span>
+      </S.Header>
 
-      {/* Nome */}
-      <input
-        type="text"
-        placeholder="Nome da turma"
-        {...register("name")}
-      />
+      <S.Form onSubmit={handleSubmit(onSubmit)}>
 
-      {/* Turno */}
-      <Controller
-        name="turno"
-        control={control}
-        render={({ field }) => (
-          <SelectTurnos
-            value={field.value}
-            onChange={field.onChange}
+        {/* 🔹 Seleção da sala */}
+        <S.Field>
+          <S.Label>Sala</S.Label>
+          <Controller 
+            name='id'
+            control={control}
+            render={({ field }) => (
+              <SelectSalas {...field} />
+            )}
           />
-        )}
-      />
+          <S.Error>{errors.id?.message}</S.Error>
+        </S.Field>
 
-      {/* Sala */}
-      <Controller
-        name="sala_id"
-        control={control}
-        render={({ field }) => (
-          <SelectSalas
-            value={field.value}
-            onChange={field.onChange}
-            turno={turno}
+        {/* 🔹 Nome */}
+        <S.Field>
+          <S.Label>Novo nome</S.Label>
+          <S.Input
+            type="text"
+            placeholder="Ex: LAB 01"
+            {...register("name")}
           />
-        )}
-      />
+          <S.Error>{errors.name?.message}</S.Error>
+        </S.Field>
 
-      <ButtonForm mode="update" isLoading={isSubmitting} />
-    </form>
+        {/* 🔹 Tipo */}
+        <S.Field>
+          <S.Label>Tipo da sala</S.Label>
+
+          <Controller 
+            name="type"
+            control={control}
+            render={({ field }) => (
+              <Select 
+                options={optionsType}
+                isClearable
+                placeholder="Selecione o tipo"
+                value={optionsType.find(opt => opt.value === field.value) || null}
+                onChange={(selected) => field.onChange(selected?.value ?? null)}
+              />
+            )}
+          />
+
+          <S.Error>{errors.type?.message}</S.Error>
+        </S.Field>
+
+        {/* 🔹 Botão */}
+        <ButtonForm mode="update" isLoading={isSubmitting} />
+
+      </S.Form>
+    </S.FormContainer>
   );
 }

@@ -54,11 +54,12 @@ export function NavBar({ turno, setTurno, onOpenSidebar }) {
 
 
       <S.UL>
+        <S.SpanTitleHora>Data Atual:</S.SpanTitleHora>
         <S.SpanHora>{dataBR}</S.SpanHora>
-        <S.SpanHora>{`${hora}:${minutos}:${segundos}`}</S.SpanHora>
+        <S.SpanTitleHora>Hora Atual:</S.SpanTitleHora>
+        <S.SpanHora>{`${hora}:${minutos}`}</S.SpanHora>
       </S.UL>
       <S.UL>
-        <S.LI>{turno.trim().toUpperCase()}</S.LI>
         <S.SidebarButton onClick={onOpenSidebar}>
           <span>Info</span>
         </S.SidebarButton>

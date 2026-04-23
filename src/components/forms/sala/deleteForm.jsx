@@ -1,32 +1,35 @@
-// React hooks
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { toast } from "react-toastify";
 
+// Style
+import * as S from '../../../styles/formsStyles/style'
+
 // Services
 import {
   deleteSala,
-  getSalasDisponiveis
+  getSalas
 } from "../../../services/salaServices";
 
-// Função principal
+// Components
+import ButtonForm from "../buttonForm/buttonForm";
+
 export default function DeleteFormSala() {
   const [salas, setSalas] = useState([]);
   const [selectedSala, setSelectedSala] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Carregar salas
   useEffect(() => {
     async function load() {
       try {
-        const res = await getSalasDisponiveis();
+        const res = await getSalas();
 
-        const salaFormatada = res.map((t) => ({
-          value: t.id,
-          label: t.name
-        }));
-
-        setSalas(salaFormatada);
+        setSalas(
+          res.map((s) => ({
+            value: s.id,
+            label: s.name
+          }))
+        );
       } catch (error) {
         console.error(error);
         toast.error("Erro ao carregar salas");
@@ -36,10 +39,9 @@ export default function DeleteFormSala() {
     load();
   }, []);
 
-  // Delete
   async function handleDelete() {
     if (!selectedSala) {
-      toast.warning("Selecione uma sala primeiro!");
+      toast.warning("Selecione uma sala!");
       return;
     }
 
@@ -48,38 +50,51 @@ export default function DeleteFormSala() {
 
       await deleteSala(selectedSala.value);
 
-      // Atualiza lista após deletar
-      setSalas((prev) =>
-        prev.filter((t) => t.value !== selectedSala.value)
+      setSalas(prev =>
+        prev.filter(s => s.value !== selectedSala.value)
       );
 
       setSelectedSala(null);
 
-      toast.success("Sala deletada com sucesso!");
+      toast.success("Sala deletada!");
     } catch (err) {
-      console.error("Erro ao deletar:", err);
-      toast.error("Erro ao deletar sala");
+      console.error(err);
+      toast.error("Erro ao deletar");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div>
-      <label>Selecione uma sala</label>
+    <S.FormContainer>
 
-      <Select
-        options={salas}
-        value={selectedSala}
-        onChange={(opt) => setSelectedSala(opt)}
-        placeholder="Selecione uma sala"
-        isClearable
-        isDisabled={loading}
-      />
+      <S.Header>
+        <h2>Remover sala</h2>
+        <span>Exclua uma sala do sistema</span>
+      </S.Header>
 
-      <button onClick={handleDelete} disabled={loading}>
-        {loading ? "Deletando..." : "Deletar"}
-      </button>
-    </div>
+      <S.Form>
+
+        <S.Field>
+          <S.Label>Selecione a sala</S.Label>
+
+          <Select
+            options={salas}
+            value={selectedSala}
+            onChange={setSelectedSala}
+            placeholder="Selecione uma sala"
+            isClearable
+            isDisabled={loading}
+          />
+        </S.Field>
+
+        <ButtonForm
+          mode="delete"
+          isLoading={loading}
+          onClick={handleDelete}
+        />
+
+      </S.Form>
+    </S.FormContainer>
   );
 }

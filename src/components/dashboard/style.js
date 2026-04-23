@@ -50,6 +50,7 @@ export const Tbody = styled.tbody`
 
 .td-turma {
   color: #111827 !important;
+  font-weight: bold !important;
 }
 
 tr {
@@ -67,7 +68,7 @@ tr {
   th,
   td {
     padding: 8px 12px;
-    font-size: 21px;
+    font-size: 18px;
     border-bottom: 1px solid #d1d5db;
     line-height: 1.2;
   }

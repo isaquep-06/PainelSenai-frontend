@@ -1,12 +1,11 @@
-import { useForm, Controller, useWatch } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Select from "react-select";
 
 // Style
-import * as S from '../../../styles/formsStyles/create/style'
+import * as S from '../../../styles/formsStyles/style'
 
 // Components
-import SelectTurnos from "../ui/selectTurnos";
 import ButtonForm from "../buttonForm/buttonForm";
 
 // Schemas
@@ -25,21 +24,14 @@ export default function CreateFormSala() {
     resolver: yupResolver(createSchemaSala),
     defaultValues: {
       name: "",
-      type: "",
-      turno: ""
+      type: null
     }
-  });
-
-  // Observa o turno 
-  const turno = useWatch({
-    control,
-    name: "turno"
   });
 
   async function onSubmit(data) {
     try {
       await createSala(data);
-      console.log("Sala criada com sucesso:", data);
+      console.log("Sala criada:", data);
     } catch (error) {
       console.error("Erro ao criar sala:", error);
     }
@@ -52,50 +44,55 @@ export default function CreateFormSala() {
   ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Nome da sala */}
-      <label>Digite o nome da sala</label>
-      <input
-        type="text"
-        placeholder="ex: LAB 1"
-        {...register("name")}
-      />
-      <span>{errors.name?.message}</span>
+    <S.FormContainer>
 
-      {/* Tipo da sala */}
-      <label>Tipo da sala</label>
-      <Controller
-        name="type"
-        control={control}
-        render={({ field }) => (
-          <Select
-            options={options}
-            isClearable
-            value={options.find(opt => opt.value === field.value) || null}
-            onChange={(selected) =>
-              field.onChange(selected ? selected.value : "")
-            }
+      <S.Header>
+        <h2>Criar sala</h2>
+        <span>Cadastre uma nova sala no sistema</span>
+      </S.Header>
+
+      <S.Form onSubmit={handleSubmit(onSubmit)}>
+
+        {/* Nome */}
+        <S.Field>
+          <S.Label>Nome da sala</S.Label>
+          <S.Input
+            type="text"
+            placeholder="Ex: LAB 01"
+            {...register("name")}
           />
-        )}
-      />
-      <span>{errors.type?.message}</span>
+          <S.Error>{errors.name?.message}</S.Error>
+        </S.Field>
 
-      {/* Turno */}
-      <label>Turno</label>
-      <Controller
-        name="turno"
-        control={control}
-        render={({ field }) => (
-          <SelectTurnos {...field} turno={turno} />
-        )}
-      />
-      <span>{errors.turno?.message}</span>
+        {/* Tipo */}
+        <S.Field>
+          <S.Label>Tipo da sala</S.Label>
 
-      {/* Botão */}
-      <ButtonForm
-        mode="create"
-        isLoading={isSubmitting}
-      />
-    </form>
+          <Controller
+            name="type"
+            control={control}
+            render={({ field }) => (
+              <Select
+                options={options}
+                placeholder="Selecione o tipo"
+                isClearable
+                value={options.find(opt => opt.value === field.value) || null}
+                onChange={(selected) =>
+                  field.onChange(selected?.value ?? null)
+                }
+              />
+            )}
+          />
+
+          <S.Error>{errors.type?.message}</S.Error>
+        </S.Field>
+
+        <ButtonForm
+          mode="create"
+          isLoading={isSubmitting}
+        />
+
+      </S.Form>
+    </S.FormContainer>
   );
 }

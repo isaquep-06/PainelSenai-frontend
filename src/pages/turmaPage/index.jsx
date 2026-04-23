@@ -1,4 +1,3 @@
-// pages/TurmaPage.jsx
 import { useState } from 'react';
 
 // Forms

@@ -6,11 +6,22 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// UI -> Footer | NavBar
+import FooterLogin from './Footer/footerLogin.jsx';
+
 // Schema
 import { loginSchema } from "../../schemas/loginSchemas.js";
 
 // Login -> Services
 import { loginAuth } from "../../services/authServices.js";
+
+// Imagen Senai Civit
+import imgLogin from '../../assets/login-senai.webp'
+import logoSenai from '../../assets/logo_senai.svg'
+
+
+// Style -> Estilo
+import * as S from './style.js'
 
 function Login() {
   const navigate = useNavigate()
@@ -59,30 +70,53 @@ function Login() {
 
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+ <>
+    <S.DivPai>
+      <S.DivTitle>
+        <h1>Gestão de Salas e Turmas</h1>
+      </S.DivTitle>
 
-        <label>Usuário</label>
-        <input
-          type="text"
-          placeholder="Usuario"
-          {...register('username')}
-        />
-        <span>{errors.username?.message}</span>
+      
+      {/* IMAGEM (ESQUERDA) */}
+      <S.DivConainerLogin>
+        <img src={imgLogin} alt="Senai" />
+      </S.DivConainerLogin>
 
-        <label>Senha</label>
-        <input
-          type="text"
-          placeholder="Senha"
-          {...register('password')}
-        />
-        <span>{errors.password?.message}</span>
 
-        <button type="submit" disabled={isSubmitting || isLogged}>
-          {isSubmitting ? "Carregando..." : isLogged ? "Logado" : "Entrar"}
-        </button>
-      </form>
-    </>
+      {/* FORM (DIREITA) */}
+      <S.DivContainerForm>
+        <S.Form onSubmit={handleSubmit(onSubmit)}>
+          <S.DivImgLogo>
+            <img src={logoSenai} alt="Logo Senai" />
+          </S.DivImgLogo>
+          <S.Label>Usuário</S.Label>
+          <S.Input
+            type="text"
+            placeholder="Usuário"
+            {...register('username')}
+          />
+          <S.Error>{errors.username?.message}</S.Error>
+
+          <S.Label>Senha</S.Label>
+          <S.Input
+            type="password"
+            placeholder="Senha"
+            {...register('password')}
+          />
+          <S.Error>{errors.password?.message}</S.Error>
+
+          <S.Button type="submit" disabled={isSubmitting || isLogged}>
+            {isSubmitting ? "Carregando..." : isLogged ? "Logado" : "Entrar"}
+          </S.Button>
+
+        </S.Form>
+      </S.DivContainerForm>
+
+
+    </S.DivPai>
+
+    <FooterLogin />
+  </>
   )
 }
 

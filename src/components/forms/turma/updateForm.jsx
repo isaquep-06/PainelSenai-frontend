@@ -2,24 +2,21 @@ import { useEffect, useState } from "react";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Select from "react-select";
+import { toast } from "react-toastify";
 
-// Components
-import NavBarForm from "../../navBarForm/navbarForm";
+import { updateSchema } from "../../../schemas/turmaSchema";
+import { updateTurma, getTurma } from "../../../services/turmaService";
+
 import SelectSalas from "../ui/selectSalas";
 import SelectTurnos from "../ui/selectTurnos";
-import ButtonForm from "../buttonForm/buttonForm";
 
-// Schema
-import { updateSchema } from "../../../schemas/turmaSchema";
-
-// Service
-import { updateTurma, getTurma } from "../../../services/turmaService";
+import * as S from "../../../styles/formsStyles/style";
+import ButtonForm from "../buttonForm/ButtonForm";
 
 export default function UpdateForm() {
   const [turmas, setTurmas] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Form
   const {
     register,
     handleSubmit,
@@ -36,137 +33,106 @@ export default function UpdateForm() {
     resolver: yupResolver(updateSchema),
   });
 
-  // 🔹 Carregar turmas
   useEffect(() => {
     async function load() {
-      try {
-        const res = await getTurma();
-        const data = res || [];
+      const res = await getTurma();
 
-        const turmasAjustadas = data.map((t) => ({
+      setTurmas(
+        res.map((t) => ({
           value: t.id,
-          label: t.name || "Sem nome",
+          label: t.name,
           ...t,
-        }));
+        }))
+      );
 
-        setTurmas(turmasAjustadas);
-      } catch (error) {
-        console.error("Erro ao carregar turmas:", error);
-        setTurmas([]);
-      } finally {
-        setLoading(false);
-      }
+      setLoading(false);
     }
 
     load();
   }, []);
 
-  // 🔹 Observar turma selecionada
-  const selectedId = useWatch({
-    control,
-    name: "id",
-  });
+  const selectedId = useWatch({ control, name: "id" });
+  const turno = useWatch({ control, name: "turno" });
 
-  // 🔹 Preencher formulário ao selecionar
   useEffect(() => {
     if (!selectedId) return;
 
-    const turmaSelecionada = turmas.find((t) => t.value === selectedId);
+    const turma = turmas.find((t) => t.value === selectedId);
 
-    if (turmaSelecionada) {
-      setValue("name", turmaSelecionada.name || "");
-      setValue("turno", turmaSelecionada.turno || null);
-      setValue("sala_id", turmaSelecionada.sala_id || null);
+    if (turma) {
+      setValue("name", turma.name);
+      setValue("turno", turma.turno);
+      setValue("sala_id", turma.sala_id);
     }
-  }, [selectedId, turmas, setValue]);
+  }, [selectedId]);
 
-  // 🔹 Observar turno
-  const turno = useWatch({
-    control,
-    name: "turno",
-  });
-
-  // 🔹 Resetar sala quando trocar turno
   useEffect(() => {
-    if (turno !== undefined) {
-      setValue("sala_id", null);
-    }
-  }, [turno, setValue]);
+    setValue("sala_id", null);
+  }, [turno]);
 
-  // 🔹 Submit
   async function onSubmit(data) {
-    try {
-      console.log("Enviando:", data);
-      await updateTurma(data);
-      alert("Turma atualizada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao atualizar:", error);
-      alert("Erro ao atualizar turma");
-    }
+    await updateTurma(data);
+    toast.success("Turma atualizada");
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <S.FormContainer>
+      <S.Header>
+        <h2>Atualizar turma</h2>
+        <span>Edite os dados da turma selecionada</span>
+      </S.Header>
 
-        {/* Loading */}
-        {loading && <p>Carregando turmas...</p>}
-
-        {/* Select turma */}
+      <S.Form onSubmit={handleSubmit(onSubmit)}>
         {!loading && (
-          <Controller
-            name="id"
-            control={control}
-            render={({ field }) => (
-              <Select
-                options={turmas}
-                placeholder="Selecione a turma"
-                isClearable
-                isDisabled={turmas.length === 0}
-                noOptionsMessage={() => "Nenhuma turma encontrada"}
-                value={
-                  turmas.find((opt) => opt.value === field.value) || null
-                }
-                onChange={(selected) =>
-                  field.onChange(selected?.value || null)
-                }
-              />
-            )}
-          />
+          <S.Field>
+            <S.Label>Turma</S.Label>
+
+            <Controller
+              name="id"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  options={turmas}
+                  value={turmas.find((t) => t.value === field.value) || null}
+                  onChange={(opt) => field.onChange(opt?.value || null)}
+                />
+              )}
+            />
+          </S.Field>
         )}
 
-        {/* 🔹 Nome */}
-        <input
-          type="text"
-          placeholder="Nome da turma"
-          {...register("name")}
-        />
+        <S.Field>
+          <S.Label>Nome</S.Label>
+          <S.Input {...register("name")} />
+        </S.Field>
 
-        {/* 🔹 Turno */}
-        <Controller
-          name="turno"
-          control={control}
-          render={({ field }) => (
-            <SelectTurnos {...field} />
-          )}
-        />
+        <S.Field>
+          <S.Label>Turno</S.Label>
+          <Controller
+            name="turno"
+            control={control}
+            render={({ field }) => (
+              <SelectTurnos {...field} />
+            )}
+          />
+        </S.Field>
 
-        {/* 🔹 Sala */}
-        <Controller
-          name="sala_id"
-          control={control}
-          render={({ field }) => (
-            <SelectSalas {...field} turno={turno} />
-          )}
-        />
+        <S.Field>
+          <S.Label>Sala</S.Label>
+          <Controller
+            name="sala_id"
+            control={control}
+            render={({ field }) => (
+              <SelectSalas {...field} turno={turno} />
+            )}
+          />
+        </S.Field>
 
-        {/* 🔹 Botão */}
         <ButtonForm
           mode="update"
           isLoading={isSubmitting}
         />
-
-      </form>
-    </>
+      </S.Form>
+    </S.FormContainer>
   );
 }

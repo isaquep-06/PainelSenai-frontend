@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
 import api from "./api";
 
-// 🔹 Buscar salas por turno (com ocupação)
-export const getSalasDisponiveis = async (turno) => {
-  const res = await api.get(`/sala?turno=${turno}`);
+// 🔹 Buscar salas
+export const getSalas = async () => {
+  const res = await api.get("/sala");
   return res.data;
 };
 

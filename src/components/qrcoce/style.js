@@ -1,67 +1,125 @@
-import styled from "styled-components";
+import styled, { keyframes } from 'styled-components';
+
+// Animação de entrada com efeito 'Spring' (mais natural e fluida)
+const springUp = keyframes`
+  0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+  60% { transform: translateY(-5px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+`;
 
 export const Container = styled.div`
   position: fixed;
-  right: 0;
-  bottom: 20px;
-
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999; /* Z-index alto de verdade para não sumir atrás de modais */
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 180px;
+  padding: 16px;
+  
+  /* Glassmorphism REAL e Otimizado */
+  background: rgba(255, 255, 255, 0.65); /* Transparência ideal */
+  backdrop-filter: blur(16px); /* Blur forte para compensar a transparência */
+  -webkit-backdrop-filter: blur(16px);
+  
+  /* Bordas sutis para destacar o vidro */
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  
+  /* Sombra elegante com tons de azul Senai */
+  box-shadow: 0 10px 30px rgba(0, 74, 165, 0.15),
+              inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+              
+  animation: ${springUp} 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
+  &:hover {
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 15px 35px rgba(0, 74, 165, 0.25),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  }
 
-  padding: 16px 14px;
-  border-radius: 18px 0 0 18px;
-
-  box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.12);
-
-  width: clamp(140px, 12vw, 240px);
-
-  z-index: 10;
+  @media (max-width: 768px) {
+    bottom: 16px;
+    right: 16px;
+    width: 120px;
+    padding: 12px;
+    border-radius: 16px;
+  }
 `;
 
-export const Title = styled.h1`
-  font-size: clamp(12px, 1vw, 18px);
-  font-weight: 600;
+export const Title = styled.h3`
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px 0;
   text-align: center;
-  color: #111827;
+  color: #004AA5; /* Azul Escuro SENAI para máxima legibilidade */
 
-  margin: 0;
+  @media (max-width: 768px) {
+    font-size: 0.65rem;
+    margin: 0 0 8px 0;
+  }
 `;
 
 export const QRWrapper = styled.div`
-  width: 100%;
-  aspect-ratio: 1/1;
-
-  background: white;
-  padding: 8px;
-  border-radius: 12px;
-
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 160, 227, 0.2); /* Borda Azul Claro SENAI */
+  transition: transform 0.3s ease;
+
+  /* Sem cursor: pointer falso e sem brilho poluente */
+  
+  ${Container}:hover & {
+    transform: scale(1.05); /* Destaque sutil acionado pelo Container */
+  }
 `;
 
 export const QRImg = styled.img`
+  display: block;
   width: 100%;
-  height: 100%;
-
-  object-fit: contain;
+  max-width: 90px;
+  height: auto;
+  border-radius: 8px;
+  
+  @media (max-width: 768px) {
+    max-width: 75px;
+  }
 `;
 
 export const Description = styled.span`
-  font-size: clamp(10px, 0.9vw, 14px);
-  color: #374151;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #004AA5;
+  background: rgba(0, 160, 227, 0.15); /* Fundo sutil Azul Claro */
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 6px;
   text-align: center;
 
-  opacity: 0.9;
+  @media (max-width: 768px) {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+  }
 `;
 
 export const Signature = styled.span`
-  font-size: clamp(9px, 0.7vw, 12px);
-  color: #6b7280;
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: #64748B;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
 
-  opacity: 0.6;
+  ${Container}:hover & {
+    opacity: 1; /* Revela a assinatura no hover */
+  }
 `;

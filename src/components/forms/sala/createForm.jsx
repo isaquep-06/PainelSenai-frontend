@@ -2,6 +2,9 @@ import { useForm, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Select from "react-select";
 
+// Style
+import * as S from '../../../styles/formsStyles/create/style'
+
 // Components
 import SelectTurnos from "../ui/selectTurnos";
 import ButtonForm from "../buttonForm/buttonForm";

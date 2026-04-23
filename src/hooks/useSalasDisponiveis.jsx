@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
-import { getSalasDisponiveis } from "../services/salaServices";
+import { getSalas } from "../services/salaServices";
 import { toast } from "react-toastify";
 
-export const useSalasDisponiveis = (turno) => {
+export const useSalas = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!turno) return;
-
     const fetchData = async () => {
       try {
         setLoading(true);
 
-        const response = await getSalasDisponiveis(turno);
+        const response = await getSalas();
 
         setData(response);
       } catch (err) {
@@ -24,7 +22,7 @@ export const useSalasDisponiveis = (turno) => {
     };
 
     fetchData();
-  }, [turno]);
+  }, []);
 
   return { data, loading };
 };

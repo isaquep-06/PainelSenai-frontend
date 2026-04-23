@@ -47,6 +47,11 @@ export const Thead = styled.thead`
 `;
 
 export const Tbody = styled.tbody`
+
+.td-turma {
+  color: #111827 !important;
+}
+
 tr {
   text-align: left;
   background-color: white;

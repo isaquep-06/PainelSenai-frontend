@@ -15,16 +15,16 @@ function TableDashboard({ data = [] }) {
         <Table>
           <Thead>
             <tr>
-              <th>Espaço de aula</th>
               <th>Turmas</th>
+              <th>Espaço de aula</th>
             </tr>
           </Thead>
 
           <Tbody>
             {data.map((d) => (
               <tr key={d.turma}>
-                <th>{d.sala.trim().toUpperCase()}</th>
-                <td>{d.turma}</td>
+                <td className="td-turma">{d.turma}</td>
+                <td>{d.sala?.trim().toUpperCase()}</td>
               </tr>
             ))}
           </Tbody>

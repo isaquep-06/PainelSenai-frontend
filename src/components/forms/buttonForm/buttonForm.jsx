@@ -1,9 +1,9 @@
+import * as S from "./styles";
+
 export default function ButtonForm({ mode, isLoading }) {
   return (
-    <button type="submit" disabled={isLoading}>
-      {mode === 'create' && 'Criar'}
-      {mode === 'update' && 'Atualizar'}
-      {mode === 'delete' && 'Deletar'}
-    </button>
+    <S.Button type="submit" disabled={isLoading} data-mode={mode}>
+      {isLoading ? "Processando..." : "Confirmar"}
+    </S.Button>
   );
 }

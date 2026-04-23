@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 //Pages
 import Login from "../pages/login/index.jsx";
 import Dashboard from "../pages/dashboard/index.jsx";
-import AtualizarDados from "../pages/telaAtualizarDados/index.jsx";
+import TurmaPage from "../pages/turmaPage/index.jsx";
 
 // Private routes
 import PrivateRoute from "./privateRoutes.jsx";
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/atualizar-sistema',
-    element: <PrivateRoute><AtualizarDados /></PrivateRoute>
+    element: <PrivateRoute><TurmaPage /></PrivateRoute>
   }
 ])
 

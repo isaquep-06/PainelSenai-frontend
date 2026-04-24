@@ -39,84 +39,78 @@ function Login() {
 
   // Função para enviar ou recusar login!
   async function onSubmit(data) {
-    setIsLogged(true)
     try {
-      const isLoading = isSubmitting ? true : false
-      if (isLoading) {
-        toast.loading("Carregando")
-      }
-      // Enviar dados para rota de login!
-      await loginAuth(data)
+      await loginAuth(data);
+
       const userDataRaw = localStorage.getItem('PainelSenai:DataUser');
       const userData = userDataRaw ? JSON.parse(userDataRaw) : null;
-      const usernameLocalStorage = userData?.username || 'Convidado';
 
-      // Notificação para login bem sucedido! (sonner)
+      const username = userData?.username || 'Convidado';
+
       toast.success(
-        <span>Bem vindo (a) <b>{usernameLocalStorage}</b></span>
+        <span>Bem-vindo(a) <b>{username}</b></span>
       );
 
-
       setTimeout(() => {
-        navigate("/dashboard")
-      }, 3500);
+        navigate("/dashboard-admin");
+      }, 1500);
 
     } catch (err) {
       toast.error(
-        err.response?.data?.message || "nome de usuário ou senha incorretos"
-      )
+        err.response?.data?.message || "Usuário ou senha incorretos"
+      );
     }
   }
 
 
   return (
- <>
-    <S.DivPai>
-      <S.DivTitle>
-        <h1>Gestão de Salas e Turmas</h1>
-      </S.DivTitle>
-
-      
-      {/* IMAGEM (ESQUERDA) */}
-      <S.DivConainerLogin>
-        <img src={imgLogin} alt="Senai" />
-      </S.DivConainerLogin>
+    <>
+      <S.DivPai>
+        <S.DivTitle>
+          <h1>Gestão de Salas e Turmas</h1>
+        </S.DivTitle>
 
 
-      {/* FORM (DIREITA) */}
-      <S.DivContainerForm>
-        <S.Form onSubmit={handleSubmit(onSubmit)}>
-          <S.DivImgLogo>
-            <img src={logoSenai} alt="Logo Senai" />
-          </S.DivImgLogo>
-          <S.Label>Usuário</S.Label>
-          <S.Input
-            type="text"
-            placeholder="Usuário"
-            {...register('username')}
-          />
-          <S.Error>{errors.username?.message}</S.Error>
-
-          <S.Label>Senha</S.Label>
-          <S.Input
-            type="password"
-            placeholder="Senha"
-            {...register('password')}
-          />
-          <S.Error>{errors.password?.message}</S.Error>
-
-          <S.Button type="submit" disabled={isSubmitting || isLogged}>
-            {isSubmitting ? "Carregando..." : isLogged ? "Logado" : "Entrar"}
-          </S.Button>
-
-        </S.Form>
-      </S.DivContainerForm>
+        {/* IMAGEM (ESQUERDA) */}
+        <S.DivConainerLogin>
+          <img src={imgLogin} alt="Senai" />
+        </S.DivConainerLogin>
 
 
-    </S.DivPai>
+        {/* FORM (DIREITA) */}
+        <S.DivContainerForm>
+          <S.Form onSubmit={handleSubmit(onSubmit)}>
+            <S.DivImgLogo>
+              <img src={logoSenai} alt="Logo Senai" />
+            </S.DivImgLogo>
+            <S.Label>Usuário</S.Label>
+            <S.Input
+              type="text"
+              placeholder="Usuário"
+              {...register('username')}
+            />
+            <S.Error>{errors.username?.message}</S.Error>
 
-    <FooterLogin />
-  </>
+            <S.Label>Senha</S.Label>
+            <S.Input
+              type="password"
+              placeholder="Senha"
+              {...register('password')}
+            />
+            <S.Error>{errors.password?.message}</S.Error>
+
+            <S.Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Carregando..." : "Entrar"}
+            </S.Button>
+
+          </S.Form>
+        </S.DivContainerForm>
+
+
+      </S.DivPai>
+
+      <FooterLogin />
+    </>
   )
 }
 

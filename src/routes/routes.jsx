@@ -3,12 +3,14 @@ import { createBrowserRouter } from "react-router-dom";
 //Pages
 import Login from "../pages/login/index.jsx";
 import Dashboard from "../pages/dashboard/index.jsx";
-import TurmaPage from "../pages/turmaPage/index.jsx";
+import PageError from "../pages/error/index.jsx";
 
 // Private routes
 import PrivateRoute from "./privateRoutes.jsx";
-import PageError from "../pages/error/index.jsx";
 import SalaPage from "../pages/salaPage/index.jsx";
+import TurmaPage from "../pages/turmaPage/index.jsx";
+import DashboardAdmin from "../pages/dashboard-Admin/index.jsx";
+import Anucio from "../pages/Anucio/index.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,12 +27,20 @@ const router = createBrowserRouter([
     element: <PageError />
   },
   {
+    path: '/dashboard-admin',
+    element: <PrivateRoute><DashboardAdmin /></PrivateRoute>
+  },
+  {
     path: '/atualizar-turmas',
     element: <PrivateRoute><TurmaPage /></PrivateRoute>
   },
   {
     path: '/atualizar-salas',
     element: <PrivateRoute><SalaPage /></PrivateRoute>
+  },
+  {
+    path: '/atualizar-anucio',
+    element: <PrivateRoute><Anucio /></PrivateRoute>
   }
 ])
 

@@ -1,59 +1,69 @@
+import { useNavigate } from 'react-router-dom';
 import * as S from './style.js';
 
-
 // Images
-import adicionarImg from '../../assets/plus.png'
-import atualizarImg from '../../assets/loading-arrow.png'
-import deleteImg from '../../assets/delete.png'
-import logo from '../../assets/logo_senai.svg'
+import adicionarImg from '../../assets/plus.png';
+import atualizarImg from '../../assets/loading-arrow.png';
+import deleteImg from '../../assets/delete.png';
+import logo from '../../assets/logo_senai.svg';
+import imgVoltar from '../../assets/de-volta.png';
 
 export default function NavBarForm({ mode, setMode, name }) {
+  const navigate = useNavigate();
 
   const handleModeChange = (newMode) => {
     setMode(newMode);
   };
 
-  const modeLabels = {
-    create: `Criar ${name}`,
-    update: `Editar ${name}`,
-    delete: `Remover ${name}`,
+  const voltarPage = () => {
+    navigate('/dashboard-admin');
   };
 
   return (
     <S.Nav>
-      <S.NavList>
+
+      {/* 🔹 ESQUERDA */}
+      <S.NavLeft>
+        <img
+          style={{ width: '32px', cursor: 'pointer' }}
+          src={imgVoltar}
+          onClick={voltarPage}
+          alt="voltar"
+        />
+      </S.NavLeft>
+
+      {/* 🔹 CENTRO */}
+      <S.NavCenter>
         <S.NavItem
           active={mode === 'create'}
           onClick={() => handleModeChange('create')}
         >
-          {`Criar ${name}`}
+          Criar {name}
           <img src={adicionarImg} alt="" />
-
         </S.NavItem>
+
         <S.NavItem
           active={mode === 'update'}
           onClick={() => handleModeChange('update')}
         >
-          {`Atualizar ${name}`}
+          Atualizar {name}
           <img src={atualizarImg} alt="" />
-
         </S.NavItem>
+
         <S.NavItem
           active={mode === 'delete'}
           onClick={() => handleModeChange('delete')}
         >
-          {`Remover ${name}`}
+          Remover {name}
           <img src={deleteImg} alt="" />
-
         </S.NavItem>
+      </S.NavCenter>
 
+      {/* 🔹 DIREITA */}
+      <S.NavRight>
+        <img style={{ width: '180px' }} src={logo} alt="logo_senai" />
+      </S.NavRight>
 
-        <img style={{ width: '220px', marginLeft: '250px' }} src={logo} alt="logo_senai" />
-
-      </S.NavList>
-      <S.ModeIndicator>
-        Modo atual: <strong>{modeLabels[mode]}</strong>
-      </S.ModeIndicator>
     </S.Nav>
   );
 }

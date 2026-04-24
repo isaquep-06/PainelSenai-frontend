@@ -1,61 +1,47 @@
 import { useEffect, useRef } from "react";
 
-function Anuncio({ midia, onNext }) {
-  const videoRef = useRef(null);
+export default function Anuncio({ midia, onNext }) {
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
-    if (!midia) return;
+    // limpa qualquer timer antigo
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
 
-    // SE FOR IMAGEM → troca depois de X tempo
+    // 🖼️ IMAGEM → 30s
     if (midia.type === "image") {
-      const timer = setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         onNext();
-      }, midia.duration || 120000); // default 2min
-
-      return () => clearTimeout(timer);
+      }, 30000);
     }
 
-    // SE FOR VIDEO → espera terminar
-    if (midia.type === "video") {
-      const video = videoRef.current;
-
-      if (video) {
-        video.play().catch(() => { }); // autoplay
-
-        const handleEnd = () => {
-          onNext();
-        };
-
-        video.addEventListener("ended", handleEnd);
-
-        return () => {
-          video.removeEventListener("ended", handleEnd);
-        };
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
-    }
+    };
   }, [midia, onNext]);
 
-  if (!midia) return null;
+  // 🎥 VIDEO → até terminar
+  if (midia.type === "video") {
+    return (
+      <video
+        src={midia.src}
+        autoPlay
+        muted
+        onEnded={onNext} // 🔥 chave aqui
+        style={{ width: "100%", height: "100%", objectFit: "fill" }}
+      />
+    );
+  }
 
+  // 🖼️ IMAGEM
   return (
-    <>
-      {midia.type === "image" ? (
-        <img
-          src={midia.src}
-          alt=""
-        />
-      ) : (
-        <video
-          ref={videoRef}
-          src={midia.src}
-          autoPlay
-          muted
-          playsInline
-          controls={false}
-        />
-      )}
-    </>
+    <img
+      src={midia.src}
+      alt="anuncio"
+      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+    />
   );
 }
-
-export default Anuncio;

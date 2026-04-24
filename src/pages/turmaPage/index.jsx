@@ -10,6 +10,7 @@ import NavBarForm from "../../components/navBarForm/navbarForm";
 
 // Estilos -> Styles
 import * as S from './style.js';
+import FooterLogin from '../login/Footer/footerLogin.jsx';
 
 export default function TurmaPage() {
   const [mode, setMode] = useState('create'); // 'create', 'update', 'delete'
@@ -30,7 +31,11 @@ export default function TurmaPage() {
 
   return (
     <S.PageContainer>
-      <NavBarForm mode={mode} setMode={setMode} />
+      <NavBarForm
+        mode={mode}
+        setMode={setMode}
+        name='Turma'
+      />
       <S.FormArea>
         {renderForm()}
       </S.FormArea>

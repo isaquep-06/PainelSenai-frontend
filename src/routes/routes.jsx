@@ -9,7 +9,7 @@ import PageError from "../pages/error/index.jsx";
 import PrivateRoute from "./privateRoutes.jsx";
 import SalaPage from "../pages/salaPage/index.jsx";
 import TurmaPage from "../pages/turmaPage/index.jsx";
-import DashboardAdmin from "../pages/dashboard-Admin/index.jsx";
+import DashboardAdmin from "../pages/dashboardAdmin/index.jsx";
 import Anucio from "../pages/Anucio/index.jsx";
 
 const router = createBrowserRouter([
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     element: <PageError />
   },
   {
-    path: '/dashboard-admin',
+    path: '/dashboardAdmin',
     element: <PrivateRoute><DashboardAdmin /></PrivateRoute>
   },
   {

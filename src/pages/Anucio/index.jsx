@@ -8,8 +8,10 @@ import {
   updateUploadStatus,
   deleteUpload,
 } from "../../services/uploadService";
+import { usePageTitle } from "../../styles/pageName";
 
 export default function Anucio() {
+  usePageTitle("Anuncio");
   const [uploads, setUploads] = useState([]);
 
   const loadUploads = async () => {

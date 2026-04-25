@@ -16,7 +16,11 @@ export default function NavBarForm({ mode, setMode, name }) {
   };
 
   const voltarPage = () => {
-    navigate('/dashboard-admin');
+    navigate('/dashboardAdmin');
+  };
+
+  const irParaTV = () => {
+    navigate('/dashboard');
   };
 
   return (
@@ -61,6 +65,12 @@ export default function NavBarForm({ mode, setMode, name }) {
 
       {/* 🔹 DIREITA */}
       <S.NavRight>
+        <S.TVButton onClick={irParaTV} title="Ver na TV">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+            <polyline points="17 2 12 7 7 2"></polyline>
+          </svg>
+        </S.TVButton>
         <img style={{ width: '180px' }} src={logo} alt="logo_senai" />
       </S.NavRight>
 

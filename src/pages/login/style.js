@@ -25,6 +25,37 @@ export const DivContainerForm = styled.div`
   }
 `;
 
+
+export const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+export const TogglePasswordButton = styled.button`
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  opacity: 0.6;
+  transition: 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  img {
+    width: 20px;
+    height: auto;
+  }
+`;
+
 /* 🔹 FORM */
 export const Form = styled.form`
   width: 100%;

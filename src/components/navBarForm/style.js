@@ -53,6 +53,37 @@ export const NavRight = styled.div`
   align-items: center;
   justify-content: flex-end;
   flex: 1;
+  gap: 16px;
+`;
+
+/* 🔹 BOTÃO TV */
+export const TVButton = styled.button`
+  background: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    transition: stroke 0.2s ease;
+  }
+
+  &:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    
+    svg {
+      stroke: white;
+    }
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
 `;
 
 /* 🔹 ITEM */

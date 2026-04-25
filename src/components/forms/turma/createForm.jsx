@@ -7,8 +7,8 @@ import { useWatch } from "react-hook-form";
 
 // Components
 import NavBarForm from "../../navBarForm/navbarForm";
-import SelectSalas from "../ui/selectSalas";
-import SelectTurnos from "../ui/selectTurnos";
+import SelectSalas from "../../ui/selectSalas";
+import SelectTurnos from "../../ui/selectTurnos";
 import ButtonForm from "../buttonForm/ButtonForm";
 
 // Styles

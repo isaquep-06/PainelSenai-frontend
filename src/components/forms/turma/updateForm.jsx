@@ -7,8 +7,8 @@ import { toast } from "react-toastify";
 import { updateSchema } from "../../../schemas/turmaSchema";
 import { updateTurma, getTurma } from "../../../services/turmaService";
 
-import SelectSalas from "../ui/selectSalas";
-import SelectTurnos from "../ui/selectTurnos";
+import SelectSalas from "../../ui/selectSalas";
+import SelectTurnos from "../../ui/selectTurnos";
 
 import * as S from "../../../styles/formsStyles/style";
 import ButtonForm from "../buttonForm/ButtonForm";

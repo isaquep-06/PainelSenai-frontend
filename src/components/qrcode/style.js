@@ -42,6 +42,10 @@ export const Container = styled.div`
   }
 
   @media (max-width: 768px) {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
     bottom: 16px;
     right: 16px;
     width: 120px;
@@ -58,6 +62,10 @@ export const Title = styled.h3`
   margin: 0 0 12px 0;
   text-align: center;
   color: #004AA5; /* Azul Escuro SENAI para máxima legibilidade */
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 
   @media (max-width: 768px) {
     font-size: 0.65rem;
@@ -81,6 +89,10 @@ export const QRWrapper = styled.div`
   
   ${Container}:hover & {
     transform: scale(1.05); /* Destaque sutil acionado pelo Container */
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -107,6 +119,10 @@ export const Description = styled.span`
   text-align: center;
 
   @media (max-width: 768px) {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
     font-size: 0.6rem;
     padding: 3px 8px;
   }
@@ -121,5 +137,9 @@ export const Signature = styled.span`
 
   ${Container}:hover & {
     opacity: 1; /* Revela a assinatura no hover */
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;

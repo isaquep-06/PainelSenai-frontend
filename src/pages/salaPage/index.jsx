@@ -1,5 +1,5 @@
 // React hooks
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // NavBar especifica para os modos -> CREATE | UPDATE | DELETE
 import NavBarForm from "../../components/navBarForm/navbarForm";
@@ -11,8 +11,10 @@ import DeleteFormSala from "../../components/forms/sala/deleteForm";
 
 // Styles
 import * as S from "./style";
+import { usePageTitle } from "../../styles/pageName.jsx";
 
 export default function SalaPage() {
+    usePageTitle("Atualizar Salas");
     const [mode, setMode] = useState('create') // CREATE | UPDATE | DELETE
 
     const renderForm = () => {

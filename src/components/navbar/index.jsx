@@ -34,12 +34,14 @@ export function NavBar({ turno, setTurno, onOpenSidebar }) {
         >
           Matutino
         </S.LiClick>
+
         <S.LiClick
           active={turno === "vespertino"}
           onClick={() => setTurno("vespertino")}
         >
           Vespertino
         </S.LiClick>
+
         <S.LiClick
           active={turno === "noturno"}
           onClick={() => setTurno("noturno")}
@@ -52,16 +54,21 @@ export function NavBar({ turno, setTurno, onOpenSidebar }) {
         <S.Logo src={logo} alt="logo-senai" />
       </S.UL>
 
+      <S.DateTimeUL>
+        <S.DateBlock>
+          <S.SpanTitleHora>Data Atual</S.SpanTitleHora>
+          <S.SpanHora>{dataBR}</S.SpanHora>
+        </S.DateBlock>
+
+        <S.DateBlock>
+          <S.SpanTitleHora>Hora Atual</S.SpanTitleHora>
+          <S.SpanHora>{`${hora}:${minutos}`}</S.SpanHora>
+        </S.DateBlock>
+      </S.DateTimeUL>
 
       <S.UL>
-        <S.SpanTitleHora>Data Atual:</S.SpanTitleHora>
-        <S.SpanHora>{dataBR}</S.SpanHora>
-        <S.SpanTitleHora>Hora Atual:</S.SpanTitleHora>
-        <S.SpanHora>{`${hora}:${minutos}`}</S.SpanHora>
-      </S.UL>
-      <S.UL>
         <S.SidebarButton onClick={onOpenSidebar}>
-          <span>Info</span>
+          Info
         </S.SidebarButton>
       </S.UL>
     </S.Nav>

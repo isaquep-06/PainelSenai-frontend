@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";  
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 
@@ -14,12 +14,12 @@ import { updateSala } from "../../../services/salaServices";
 
 // Components
 import ButtonForm from "../buttonForm/buttonForm";
-import SelectSalas from "../ui/selectSalas";
+import SelectSalas from "../../ui/selectSalas";
 
 export default function UpdateFormSala() {
 
   const {
-    register, 
+    register,
     handleSubmit,
     control,
     formState: { isSubmitting, errors }
@@ -59,7 +59,7 @@ export default function UpdateFormSala() {
         {/* 🔹 Seleção da sala */}
         <S.Field>
           <S.Label>Sala</S.Label>
-          <Controller 
+          <Controller
             name='id'
             control={control}
             render={({ field }) => (
@@ -84,11 +84,11 @@ export default function UpdateFormSala() {
         <S.Field>
           <S.Label>Tipo da sala</S.Label>
 
-          <Controller 
+          <Controller
             name="type"
             control={control}
             render={({ field }) => (
-              <Select 
+              <Select
                 options={optionsType}
                 isClearable
                 placeholder="Selecione o tipo"

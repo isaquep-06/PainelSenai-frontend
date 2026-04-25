@@ -10,9 +10,10 @@ import NavBarForm from "../../components/navBarForm/navbarForm";
 
 // Estilos -> Styles
 import * as S from './style.js';
-import FooterLogin from '../login/Footer/footerLogin.jsx';
+import { usePageTitle } from '../../styles/pageName.jsx';
 
 export default function TurmaPage() {
+  usePageTitle("Atualizar Turmas");
   const [mode, setMode] = useState('create'); // 'create', 'update', 'delete'
 
   // Renderiza o formulário baseado no modo atual

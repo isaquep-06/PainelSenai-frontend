@@ -1,8 +1,8 @@
 import Select from "react-select";
-import { useSalas } from "../../../hooks/useSalasDisponiveis";
+import { useSalas } from "../../hooks/useSalasDisponiveis";
 
 export default function SelectSalas({ value, onChange }) {
-  const { data, loading } = useSalas(); 
+  const { data, loading } = useSalas();
 
   const options = [
     {

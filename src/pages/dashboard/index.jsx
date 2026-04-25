@@ -1,17 +1,25 @@
 import { io } from "socket.io-client";
-import { useEffect, useState, useCallback } from "react";
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import { toast } from "react-toastify";
 import * as S from "./style.js";
 
 import TableDashboard from "../../components/dashboard/tableDashboard.jsx";
 import { NavBar } from "../../components/navbar/index.jsx";
-import Anuncio from "../../components/anucios/index.jsx";
+import Anuncio from "../../components/Anuncio/index.jsx";
 import { Sidebar } from "../../components/Sidebar/index.jsx";
-import QRCode from "../../components/qrcoce/index.jsx";
+import QRCode from "../../components/qrcode/index.jsx";
 
 import api from "../../services/api";
+import { usePageTitle } from "../../styles/pageName.jsx";
 
 function Dashboard() {
+  usePageTitle("Dashboard");
+
   const [socket, setSocket] = useState(null);
 
   function getTurnoAtual() {
@@ -25,31 +33,60 @@ function Dashboard() {
 
   const [turno, setTurno] = useState(getTurnoAtual());
   const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [midias, setMidias] = useState([]);
   const [indexMidia, setIndexMidia] = useState(0);
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] =
+    useState(false);
 
+  const [lastUpdate, setLastUpdate] =
+    useState(null);
+
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth <= 768
+  );
+
+  // =========================
+  // RESPONSIVO
+  // =========================
+  useEffect(() => {
+    const resize = () =>
+      setIsMobile(window.innerWidth <= 768);
+
+    window.addEventListener("resize", resize);
+
+    return () =>
+      window.removeEventListener("resize", resize);
+  }, []);
+
+  // =========================
+  // MÍDIAS
+  // =========================
   function nextMidia() {
     if (midias.length === 0) return;
 
-    setIndexMidia((prev) => (prev + 1) % midias.length);
+    setIndexMidia(
+      (prev) => (prev + 1) % midias.length
+    );
   }
 
   async function loadMidias() {
     try {
       const res = await api.get("/upload");
 
-      const somenteAtivos = (res.data || []).filter(
+      const ativos = (res.data || []).filter(
         (item) => item.active === true
       );
 
-      setMidias(somenteAtivos);
+      setMidias(ativos);
       setIndexMidia(0);
     } catch (error) {
-      console.error("Erro ao carregar mídias:", error);
+      console.error(
+        "Erro ao carregar mídias:",
+        error
+      );
     }
   }
 
@@ -57,20 +94,31 @@ function Dashboard() {
     loadMidias();
   }, []);
 
+  // =========================
+  // TURNO AUTOMÁTICO
+  // =========================
   useEffect(() => {
     const interval = setInterval(() => {
       const novoTurno = getTurnoAtual();
 
       setTurno((prev) =>
-        prev !== novoTurno ? novoTurno : prev
+        prev !== novoTurno
+          ? novoTurno
+          : prev
       );
     }, 60000);
 
     return () => clearInterval(interval);
   }, []);
 
+  // =========================
+  // DASHBOARD
+  // =========================
   const loadDashboardData = useCallback(
-    async (showToast = false, timestamp = null) => {
+    async (
+      showToast = false,
+      timestamp = null
+    ) => {
       try {
         const res = await api.get(
           `/dashboard?turno=${turno}`
@@ -78,11 +126,11 @@ function Dashboard() {
 
         setData(res.data || []);
 
-        if (timestamp) {
-          setLastUpdate(new Date(timestamp));
-        } else {
-          setLastUpdate(new Date());
-        }
+        setLastUpdate(
+          timestamp
+            ? new Date(timestamp)
+            : new Date()
+        );
 
         if (showToast) {
           toast.success("Atualizado");
@@ -90,11 +138,12 @@ function Dashboard() {
 
         return true;
       } catch {
+        setData([]);
+
         if (showToast) {
           toast.error("Erro ao carregar");
         }
 
-        setData([]);
         return false;
       }
     },
@@ -105,16 +154,13 @@ function Dashboard() {
     loadDashboardData();
   }, [turno, loadDashboardData]);
 
+  // =========================
+  // SOCKET
+  // =========================
   useEffect(() => {
-    const newSocket = io("http://localhost:3000");
-
-    newSocket.on("connect", () => {
-      console.log("connected");
-    });
-
-    newSocket.on("disconnect", () => {
-      console.log("disconnected");
-    });
+    const newSocket = io(
+      "http://localhost:3000"
+    );
 
     newSocket.on("reconnect", () => {
       loadDashboardData(false);
@@ -123,7 +169,8 @@ function Dashboard() {
 
     setSocket(newSocket);
 
-    return () => newSocket.disconnect();
+    return () =>
+      newSocket.disconnect();
   }, [loadDashboardData]);
 
   useEffect(() => {
@@ -132,7 +179,10 @@ function Dashboard() {
     let timeout;
 
     const handler = (event) => {
-      if (!event?.turno || event.turno === turno) {
+      if (
+        !event?.turno ||
+        event.turno === turno
+      ) {
         clearTimeout(timeout);
 
         timeout = setTimeout(() => {
@@ -144,52 +194,153 @@ function Dashboard() {
       }
     };
 
-    socket.on("dashboard:update", handler);
+    socket.on(
+      "dashboard:update",
+      handler
+    );
 
-    socket.on("anuncios:update", loadMidias);
+    socket.on(
+      "anuncios:update",
+      loadMidias
+    );
 
     return () => {
-      socket.off("dashboard:update", handler);
-      socket.off("anuncios:update", loadMidias);
+      socket.off(
+        "dashboard:update",
+        handler
+      );
+
+      socket.off(
+        "anuncios:update",
+        loadMidias
+      );
     };
-  }, [socket, turno, loadDashboardData]);
+  }, [
+    socket,
+    turno,
+    loadDashboardData,
+  ]);
 
-  const metade = Math.ceil(data.length / 2);
+  // =========================
+  // PESQUISA
+  // =========================
+  const normalizeText = (
+    text = ""
+  ) =>
+    text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(
+        /[\u0300-\u036f]/g,
+        ""
+      )
+      .replace(/[-_/]/g, " ")
+      .replace(
+        /\b0+(\d+)\b/g,
+        "$1"
+      )
+      .replace(/\s+/g, " ")
+      .trim();
 
-  const tabelaEsquerda = data.slice(0, metade);
-  const tabelaDireita = data.slice(metade);
+  const filteredData = useMemo(() => {
+    if (!searchTerm.trim())
+      return data;
+
+    const term =
+      normalizeText(searchTerm);
+
+    return data.filter((item) => {
+      const sala =
+        normalizeText(item.sala);
+
+      const turma =
+        normalizeText(item.turma);
+
+      const curso =
+        normalizeText(item.curso);
+
+      return (
+        sala.includes(term) ||
+        turma.includes(term) ||
+        curso.includes(term)
+      );
+    });
+  }, [data, searchTerm]);
+
+  // =========================
+  // DESKTOP = 2 TABELAS
+  // MOBILE = 1 TABELA
+  // =========================
+  const metade = Math.ceil(
+    filteredData.length / 2
+  );
+
+  const tabelaEsquerda =
+    filteredData.slice(0, metade);
+
+  const tabelaDireita =
+    filteredData.slice(metade);
 
   return (
     <S.Body>
       <NavBar
-        setTurno={setTurno}
         turno={turno}
+        setTurno={setTurno}
         onOpenSidebar={() =>
           setIsSidebarOpen(true)
         }
       />
 
-      <S.MainContent>
-        <S.TablesContainer
-          style={{
-            display: "flex",
-            gap: "16px",
-          }}
-        >
-          <TableDashboard
-            data={tabelaEsquerda}
-          />
+      {/* Pesquisa */}
+      <S.SearchContainer>
+        <S.SearchInput
+          type="text"
+          placeholder="Pesquisar sala, turma ou curso..."
+          value={searchTerm}
+          onChange={(e) =>
+            setSearchTerm(
+              e.target.value
+            )
+          }
+        />
 
-          <TableDashboard
-            data={tabelaDireita}
-          />
+        {searchTerm && (
+          <S.ClearButton
+            onClick={() =>
+              setSearchTerm("")
+            }
+          >
+            ✕
+          </S.ClearButton>
+        )}
+      </S.SearchContainer>
+
+      <S.MainContent>
+        <S.TablesContainer>
+          {isMobile ? (
+            <TableDashboard
+              data={filteredData}
+            />
+          ) : (
+            <>
+              <TableDashboard
+                data={tabelaEsquerda}
+              />
+
+              <TableDashboard
+                data={tabelaDireita}
+              />
+            </>
+          )}
         </S.TablesContainer>
 
         <S.RightSide>
           <S.VideoContainer>
             {midias.length > 0 ? (
               <Anuncio
-                midia={midias[indexMidia]}
+                midia={
+                  midias[indexMidia]
+                }
                 onNext={nextMidia}
               />
             ) : (

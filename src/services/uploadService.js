@@ -31,10 +31,7 @@ export const getUploads = async () => {
 export const updateUploadStatus = async (id, active) => {
   const safeId = encodeURIComponent(id);
 
-  const res = await api.put(
-    `/upload/${safeId}/status`,
-    { active }
-  );
+  const res = await api.put(`/upload/${safeId}/status`, { active });
 
   return res.data;
 };

@@ -3,7 +3,7 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 
 // Style
-import * as S from '../../../styles/formsStyles/style'
+import * as S from "../../../styles/formsStyles/style";
 
 // Services
 import {
@@ -27,7 +27,7 @@ export default function DeleteFormSala() {
         setSalas(
           res.map((s) => ({
             value: s.id,
-            label: s.name
+            label: s.name.toUpperCase() // já vem maiúsculo
           }))
         );
       } catch (error) {
@@ -50,8 +50,10 @@ export default function DeleteFormSala() {
 
       await deleteSala(selectedSala.value);
 
-      setSalas(prev =>
-        prev.filter(s => s.value !== selectedSala.value)
+      setSalas((prev) =>
+        prev.filter(
+          (s) => s.value !== selectedSala.value
+        )
       );
 
       setSelectedSala(null);
@@ -67,16 +69,18 @@ export default function DeleteFormSala() {
 
   return (
     <S.FormContainer>
-
       <S.Header>
         <h2>Remover sala</h2>
-        <span>Exclua uma sala do sistema</span>
+        <span>
+          Exclua uma sala do sistema
+        </span>
       </S.Header>
 
       <S.Form>
-
         <S.Field>
-          <S.Label>Selecione a sala</S.Label>
+          <S.Label>
+            Selecione a sala
+          </S.Label>
 
           <Select
             options={salas}
@@ -93,7 +97,6 @@ export default function DeleteFormSala() {
           isLoading={loading}
           onClick={handleDelete}
         />
-
       </S.Form>
     </S.FormContainer>
   );

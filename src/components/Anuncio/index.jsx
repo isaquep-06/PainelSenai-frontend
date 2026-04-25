@@ -9,7 +9,7 @@ export default function Anuncio({ midia, onNext }) {
       clearTimeout(timeoutRef.current);
     }
 
-    // 🖼️ IMAGEM → 30s
+    // IMAGEM → 30s
     if (midia.type === "image") {
       timeoutRef.current = setTimeout(() => {
         onNext();
@@ -23,25 +23,25 @@ export default function Anuncio({ midia, onNext }) {
     };
   }, [midia, onNext]);
 
-  // 🎥 VIDEO → até terminar
+  //  VIDEO → até terminar
   if (midia.type === "video") {
     return (
       <video
         src={midia.src}
         autoPlay
         muted
-        onEnded={onNext} // 🔥 chave aqui
+        onEnded={onNext} //  chave aqui
         style={{ width: "100%", height: "100%", objectFit: "fill" }}
       />
     );
   }
 
-  // 🖼️ IMAGEM
+  //  IMAGEM
   return (
     <img
       src={midia.src}
       alt="anuncio"
-      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      style={{ width: "100%", height: "100%", objectFit: "fill" }}
     />
   );
 }

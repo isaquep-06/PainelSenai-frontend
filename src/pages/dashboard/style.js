@@ -15,6 +15,58 @@ export const Body = styled.div`
 `;
 
 // =====================
+//  CAMPO DE PESQUISA (MOBILE)
+// =====================
+export const SearchContainer = styled.div`
+  display: none;
+  padding: 0 16px 12px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+`;
+
+export const SearchInput = styled.input`
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: #2563eb;
+  }
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+`;
+
+export const ClearButton = styled.button`
+  background: #e2e8f0;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #cbd5e1;
+    color: #475569;
+  }
+`;
+
+// =====================
 //  MAIN CONTENT
 // =====================
 export const MainContent = styled.div`

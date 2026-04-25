@@ -1,32 +1,26 @@
-// React hooks
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// UI -> Footer | NavBar
 import FooterLogin from './Footer/footerLogin.jsx';
-
-// Schema
 import { loginSchema } from "../../schemas/loginSchemas.js";
-
-// Login -> Services
 import { loginAuth } from "../../services/authServices.js";
 
-// Imagen Senai Civit
 import imgLogin from '../../assets/login-senai.webp'
 import logoSenai from '../../assets/logo_senai.svg'
+import olhoFechado from '../../assets/olho-fechado.png'
+import olhoAberto from '../../assets/olho-aberto.png'
 
-
-// Style -> Estilo
 import * as S from './style.js'
+import { usePageTitle } from '../../styles/pageName.jsx';
 
 function Login() {
-  const navigate = useNavigate()
+  usePageTitle("Login");
+  const navigate = useNavigate();
 
-  const [isLogged, setIsLogged] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const {
     register,
@@ -34,17 +28,13 @@ function Login() {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(loginSchema),
-  })
+  });
 
-
-  // Função para enviar ou recusar login!
   async function onSubmit(data) {
     try {
       await loginAuth(data);
-
       const userDataRaw = localStorage.getItem('PainelSenai:DataUser');
       const userData = userDataRaw ? JSON.parse(userDataRaw) : null;
-
       const username = userData?.username || 'Convidado';
 
       toast.success(
@@ -52,7 +42,7 @@ function Login() {
       );
 
       setTimeout(() => {
-        navigate("/dashboard-admin");
+        navigate("/dashboardAdmin");
       }, 1500);
 
     } catch (err) {
@@ -62,6 +52,11 @@ function Login() {
     }
   }
 
+  // Função para alternar visibilidade
+  const togglePasswordVisibility = (e) => {
+    e.preventDefault(); // Evita que o botão dê submit no form
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   return (
     <>
@@ -70,48 +65,54 @@ function Login() {
           <h1>Gestão de Salas e Turmas</h1>
         </S.DivTitle>
 
-
-        {/* IMAGEM (ESQUERDA) */}
         <S.DivConainerLogin>
           <img src={imgLogin} alt="Senai" />
         </S.DivConainerLogin>
 
-
-        {/* FORM (DIREITA) */}
         <S.DivContainerForm>
           <S.Form onSubmit={handleSubmit(onSubmit)}>
             <S.DivImgLogo>
               <img src={logoSenai} alt="Logo Senai" />
             </S.DivImgLogo>
+
             <S.Label>Usuário</S.Label>
             <S.Input
               type="text"
-              placeholder="Usuário"
+              placeholder="Digite seu usuário"
               {...register('username')}
             />
             <S.Error>{errors.username?.message}</S.Error>
 
             <S.Label>Senha</S.Label>
-            <S.Input
-              type="password"
-              placeholder="Senha"
-              {...register('password')}
-            />
+            <S.InputWrapper>
+              <S.Input
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder="Digite sua senha"
+                {...register('password')}
+              />
+              <S.TogglePasswordButton
+                type="button"
+                onClick={togglePasswordVisibility}
+                tabIndex="-1" // Evita que o TAB pare no ícone se não quiser
+              >
+                <img
+                  src={isPasswordVisible ? olhoAberto : olhoFechado}
+                  alt={isPasswordVisible ? "Esconder senha" : "Mostrar senha"}
+                />
+              </S.TogglePasswordButton>
+            </S.InputWrapper>
             <S.Error>{errors.password?.message}</S.Error>
 
             <S.Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Carregando..." : "Entrar"}
             </S.Button>
-
           </S.Form>
         </S.DivContainerForm>
-
-
       </S.DivPai>
 
       <FooterLogin />
     </>
-  )
+  );
 }
 
 export default Login;

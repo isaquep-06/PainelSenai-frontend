@@ -13,7 +13,7 @@ import { updateSchemaSala } from "../../../schemas/salaSchemas";
 import { updateSala } from "../../../services/salaServices";
 
 // Components
-import ButtonForm from "../buttonForm/buttonForm";
+import ButtonForm from "../buttonForm/ButtonForm";
 import SelectSalas from "../../ui/selectSalas";
 
 export default function UpdateFormSala() {

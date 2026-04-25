@@ -6,7 +6,7 @@ import Select from "react-select";
 import * as S from '../../../styles/formsStyles/style'
 
 // Components
-import ButtonForm from "../buttonForm/buttonForm";
+import ButtonForm from "../buttonForm/ButtonForm";
 
 // Schemas
 import { createSchemaSala } from "../../../schemas/salaSchemas";

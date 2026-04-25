@@ -12,7 +12,7 @@ import {
 } from "../../../services/salaServices";
 
 // Components
-import ButtonForm from "../buttonForm/buttonForm";
+import ButtonForm from "../buttonForm/ButtonForm";
 
 export default function DeleteFormSala() {
   const [salas, setSalas] = useState([]);

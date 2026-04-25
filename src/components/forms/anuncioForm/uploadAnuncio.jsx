@@ -1,28 +1,20 @@
 import { useState } from "react";
-import { uploadFile } from "../../../services/uploadService";
 import { toast } from "react-toastify";
 
-export default function UploadAnuncio({
-  onSuccess,
-}) {
-  const [file, setFile] =
-    useState(null);
+import { uploadFile } from "../../../services/uploadService";
+
+export default function UploadAnuncio({ onSuccess }) {
+  const [file, setFile] = useState(null);
 
   const handleUpload = async () => {
     if (!file) {
-      toast.warning(
-        "Selecione um arquivo"
-      );
+      toast.warning("Selecione um arquivo");
       return;
     }
 
     try {
       await uploadFile(file);
-
-      toast.success(
-        "Upload realizado com sucesso!"
-      );
-
+      toast.success("Upload realizado com sucesso!");
       setFile(null);
 
       if (onSuccess) {
@@ -37,14 +29,8 @@ export default function UploadAnuncio({
   return (
     <div style={container}>
       <div style={leftArea}>
-        <span style={label}>
-          Enviar anúncio
-        </span>
-
-        <span style={subLabel}>
-          Imagem ou vídeo para o
-          painel
-        </span>
+        <span style={label}>Enviar anuncio</span>
+        <span style={subLabel}>Imagem ou video para o painel</span>
       </div>
 
       <div style={rightArea}>
@@ -52,22 +38,13 @@ export default function UploadAnuncio({
           <input
             type="file"
             style={input}
-            onChange={(e) =>
-              setFile(
-                e.target.files[0]
-              )
-            }
+            onChange={(e) => setFile(e.target.files[0])}
           />
 
-          {file
-            ? file.name
-            : "Selecionar arquivo"}
+          {file ? file.name : "Selecionar arquivo"}
         </label>
 
-        <button
-          style={button}
-          onClick={handleUpload}
-        >
+        <button style={button} onClick={handleUpload}>
           Enviar
         </button>
       </div>
@@ -77,16 +54,14 @@ export default function UploadAnuncio({
 
 const container = {
   width: "100%",
-  background:
-    "linear-gradient(135deg,#0f172a,#1e293b)",
+  background: "linear-gradient(135deg,#0f172a,#1e293b)",
   borderRadius: "22px",
   padding: "24px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   gap: "20px",
-  boxShadow:
-    "0 15px 35px rgba(0,0,0,0.18)",
+  boxShadow: "0 15px 35px rgba(0,0,0,0.18)",
   flexWrap: "wrap",
 };
 
@@ -134,14 +109,12 @@ const input = {
 
 const button = {
   border: "none",
-  background:
-    "linear-gradient(135deg,#2563eb,#1d4ed8)",
+  background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
   color: "#fff",
   padding: "12px 26px",
   borderRadius: "12px",
   fontWeight: "700",
   cursor: "pointer",
   fontSize: "15px",
-  boxShadow:
-    "0 8px 20px rgba(37,99,235,0.35)",
+  boxShadow: "0 8px 20px rgba(37,99,235,0.35)",
 };

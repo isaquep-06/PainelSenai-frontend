@@ -20,8 +20,8 @@ export default function NavBarAdmin() {
         navigate('/atualizar-turmas')
         break;
 
-      case 'anucio':
-        navigate('/atualizar-anucio')
+      case 'anuncio':
+        navigate('/atualizar-anuncio')
         break;
 
       case 'tv':
@@ -37,7 +37,7 @@ export default function NavBarAdmin() {
       <S.UL>
         <S.LIAtualizacoes onClick={() => route('salas')}>Salas</S.LIAtualizacoes>
         <S.LIAtualizacoes onClick={() => route('turmas')}>Turmas</S.LIAtualizacoes>
-        <S.LIAtualizacoes onClick={() => route('anucio')}>Anucios</S.LIAtualizacoes>
+        <S.LIAtualizacoes onClick={() => route('anuncio')}>Anuncios</S.LIAtualizacoes>
       </S.UL>
 
       <S.LogoWrapper>

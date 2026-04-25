@@ -42,7 +42,7 @@ function Login() {
       );
 
       setTimeout(() => {
-        navigate("/dashboardAdmin");
+        navigate("/dashboard-admin");
       }, 1500);
 
     } catch (err) {

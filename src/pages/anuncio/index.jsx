@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 
-import UploadAnuncio from "../../components/forms/anucioForm/uploadAnucio";
+import UploadAnuncio from "../../components/forms/anuncioForm/uploadAnuncio";
 import NavBarAdmin from "../../components/navbarAdmin";
 
 import {
+  deleteUpload,
   getUploads,
   updateUploadStatus,
-  deleteUpload,
 } from "../../services/uploadService";
 import { usePageTitle } from "../../styles/pageName";
 
-export default function Anucio() {
+export default function AnuncioPage() {
   usePageTitle("Anuncio");
   const [uploads, setUploads] = useState([]);
 
@@ -29,18 +29,15 @@ export default function Anucio() {
 
   const toggleAtivo = async (item) => {
     try {
-      await updateUploadStatus(
-        item.id,
-        !item.active
-      );
+      await updateUploadStatus(item.id, !item.active);
 
       setUploads((prev) =>
         prev.map((media) =>
           media.id === item.id
             ? {
-              ...media,
-              active: !media.active,
-            }
+                ...media,
+                active: !media.active,
+              }
             : media
         )
       );
@@ -51,15 +48,10 @@ export default function Anucio() {
 
   const deletarMidia = async (item) => {
     try {
-      await deleteUpload(
-        item.id,
-        item.type
-      );
+      await deleteUpload(item.id, item.type);
 
       setUploads((prev) =>
-        prev.filter(
-          (media) => media.id !== item.id
-        )
+        prev.filter((media) => media.id !== item.id)
       );
     } catch (error) {
       console.error(error);
@@ -73,64 +65,35 @@ export default function Anucio() {
       <div style={container}>
         <UploadAnuncio onSuccess={loadUploads} />
 
-        <h1 style={title}>
-          Gerenciar Anúncios
-        </h1>
+        <h1 style={title}>Gerenciar Anuncios</h1>
 
         <div style={grid}>
           {uploads.map((item) => (
-            <div
-              key={item.id}
-              style={card}
-            >
+            <div key={item.id} style={card}>
               <div style={mediaArea}>
                 {item.type === "video" ? (
-                  <video
-                    src={item.src}
-                    style={media}
-                    controls
-                  />
+                  <video src={item.src} style={media} controls />
                 ) : (
-                  <img
-                    src={item.src}
-                    alt="anuncio"
-                    style={media}
-                  />
+                  <img src={item.src} alt="anuncio" style={media} />
                 )}
               </div>
 
               <div style={info}>
-                <span
-                  style={status(
-                    item.active
-                  )}
-                >
-                  {item.active
-                    ? "Ativo"
-                    : "Inativo"}
+                <span style={status(item.active)}>
+                  {item.active ? "Ativo" : "Inativo"}
                 </span>
 
                 <div style={actions}>
                   <button
                     style={btnPrimary}
-                    onClick={() =>
-                      toggleAtivo(
-                        item
-                      )
-                    }
+                    onClick={() => toggleAtivo(item)}
                   >
-                    {item.active
-                      ? "Desativar"
-                      : "Ativar"}
+                    {item.active ? "Desativar" : "Ativar"}
                   </button>
 
                   <button
                     style={btnDanger}
-                    onClick={() =>
-                      deletarMidia(
-                        item
-                      )
-                    }
+                    onClick={() => deletarMidia(item)}
                   >
                     Deletar
                   </button>
@@ -158,8 +121,7 @@ const title = {
 
 const grid = {
   display: "grid",
-  gridTemplateColumns:
-    "repeat(auto-fit, minmax(320px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
   gap: "20px",
 };
 
@@ -167,8 +129,7 @@ const card = {
   background: "#fff",
   borderRadius: "18px",
   padding: "16px",
-  boxShadow:
-    "0 8px 25px rgba(0,0,0,0.08)",
+  boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
 };
 
 const mediaArea = {
@@ -222,10 +183,6 @@ const status = (active) => ({
   borderRadius: "30px",
   fontSize: "14px",
   fontWeight: "700",
-  background: active
-    ? "#dcfce7"
-    : "#fee2e2",
-  color: active
-    ? "#166534"
-    : "#991b1b",
+  background: active ? "#dcfce7" : "#fee2e2",
+  color: active ? "#166534" : "#991b1b",
 });

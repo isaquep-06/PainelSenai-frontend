@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 
 //Pages
 import Login from "../pages/login/index.jsx";
@@ -10,38 +10,41 @@ import PrivateRoute from "./privateRoutes.jsx";
 import SalaPage from "../pages/salaPage/index.jsx";
 import TurmaPage from "../pages/turmaPage/index.jsx";
 import DashboardAdmin from "../pages/dashboardAdmin/index.jsx";
-import Anucio from "../pages/Anucio/index.jsx";
+import AnuncioPage from "../pages/anuncio/index.jsx";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Navigate to="/login" replace />
+  },
   {
     path: "/login",
     element: <Login />
   },
   {
-    path: '/dashboard',
-    element:
-      <Dashboard />
+    path: "/dashboard",
+    element: <Dashboard />
   },
   {
-    path: '/not-found',
-    element: <PageError />
-  },
-  {
-    path: '/dashboardAdmin',
+    path: "/dashboard-admin",
     element: <PrivateRoute><DashboardAdmin /></PrivateRoute>
   },
   {
-    path: '/atualizar-turmas',
+    path: "/atualizar-turmas",
     element: <PrivateRoute><TurmaPage /></PrivateRoute>
   },
   {
-    path: '/atualizar-salas',
+    path: "/atualizar-salas",
     element: <PrivateRoute><SalaPage /></PrivateRoute>
   },
   {
-    path: '/atualizar-anucio',
-    element: <PrivateRoute><Anucio /></PrivateRoute>
+    path: "/atualizar-anuncio",
+    element: <PrivateRoute><AnuncioPage /></PrivateRoute>
+  },
+  {
+    path: "*",
+    element: <PageError />
   }
-])
+]);
 
 export default router;

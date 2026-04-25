@@ -16,7 +16,7 @@ export default function NavBarForm({ mode, setMode, name }) {
   };
 
   const voltarPage = () => {
-    navigate('/dashboardAdmin');
+    navigate('/dashboard-admin');
   };
 
   const irParaTV = () => {

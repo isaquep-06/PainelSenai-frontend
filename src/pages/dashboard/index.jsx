@@ -17,7 +17,9 @@ import QRCode from "../../components/qrcode/index.jsx";
 import api from "../../services/api";
 import { usePageTitle } from "../../styles/pageName.jsx";
 
-const socketUrl = import.meta.env.VITE_API_URL;
+const socketUrl =
+  import.meta.env.VITE_API_URL ||
+  "https://painelsenai-production.up.railway.app";
 
 function Dashboard() {
   usePageTitle("Dashboard");
@@ -160,7 +162,10 @@ function Dashboard() {
   // SOCKET
   // =========================
   useEffect(() => {
-    const newSocket = io(socketUrl);
+    const newSocket = io(socketUrl, {
+      withCredentials: true,
+      transports: ["websocket", "polling"],
+    });
 
     newSocket.on("reconnect", () => {
       loadDashboardData(false);

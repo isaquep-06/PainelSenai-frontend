@@ -74,7 +74,7 @@ export const UL = styled.ul`
 
 export const LiClick = styled.li`
   list-style: none;
-  font-size: 14px;
+  font-size: 22px;
   font-weight: 600;
   cursor: pointer;
   padding: 8px 12px;

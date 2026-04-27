@@ -14,24 +14,58 @@ export const Overlay = styled.div`
   transition: all 0.3s ease;
 `;
 
+export const DragBar = styled.div`
+  width: 52px;
+  height: 6px;
+  border-radius: 999px;
+  background: #d1d5db;
+  margin: 0 auto 8px auto;
+
+  @media (min-width: 769px) {
+    display: none;
+  }
+`;
+
 export const SidebarContainer = styled.aside`
   position: fixed;
   top: 0;
   right: 0;
-  width: 320px;
+  width: 340px;
   height: 100vh;
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255,255,255,0.98);
   backdrop-filter: blur(12px);
-  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.1);
+  box-shadow: -8px 0 32px rgba(0,0,0,0.10);
   z-index: 999;
+
   padding: 24px 20px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(100%)')};
-  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-  font-family: 'Inter', sans-serif;
+
+  transform: ${({ isOpen }) =>
+    isOpen ? "translateX(0)" : "translateX(100%)"};
+
+  transition: all .35s ease;
+
   border-left: 4px solid #2563eb;
+  overflow-y: auto;
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 88vh;
+    border-left: none;
+    border-top: 4px solid #2563eb;
+    border-radius: 24px 24px 0 0;
+
+    transform: ${({ isOpen }) =>
+    isOpen ? "translateY(0)" : "translateY(100%)"};
+
+    padding: 18px 16px 30px;
+  }
 `;
 
 export const CloseButton = styled.button`

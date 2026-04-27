@@ -37,6 +37,7 @@ export function Sidebar({ isOpen, onClose, lastUpdate, onRefresh }) {
     <>
       <S.Overlay isOpen={isOpen} onClick={onClose} />
       <S.SidebarContainer isOpen={isOpen}>
+        <S.DragBar />
         <S.CloseButton onClick={onClose}>✕</S.CloseButton>
         <S.Title>📡 Informações do Sistema</S.Title>
 

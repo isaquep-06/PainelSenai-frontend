@@ -48,9 +48,34 @@ function Dashboard() {
   const [lastUpdate, setLastUpdate] =
     useState(null);
 
-  const [isMobile, setIsMobile] = useState(
-    window.innerWidth <= 768
-  );
+  function checkMobile() {
+    const width = window.innerWidth;
+
+    const isTouchDevice =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0;
+
+    return width <= 900 && isTouchDevice;
+  }
+
+  const [isMobile, setIsMobile] = useState(checkMobile());
+
+  useEffect(() => {
+    const resize = () => {
+      setIsMobile(checkMobile());
+    };
+
+    window.addEventListener("resize", resize);
+    window.addEventListener("orientationchange", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      window.removeEventListener(
+        "orientationchange",
+        resize
+      );
+    };
+  }, []);
 
   // =========================
   // RESPONSIVO
@@ -357,7 +382,7 @@ function Dashboard() {
         </S.RightSide>
       </S.MainContent>
 
-      <QRCode />
+      {!isMobile && <QRCode />}
 
       <Sidebar
         isOpen={isSidebarOpen}

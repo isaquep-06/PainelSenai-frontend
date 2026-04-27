@@ -10,10 +10,11 @@ import GlobalStyles from "./styles/globalStyle.js";
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <StyledToastContainer
-      position="bottom-center"
+      position="top-center"
+      autoClose={2500}
+      newestOnTop
       closeOnClick
-      pauseOnHover
-      draggable />
+    />
     <GlobalStyles />
     <RouterProvider router={router} />
   </StrictMode>,

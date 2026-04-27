@@ -74,10 +74,10 @@ export const MainContent = styled.div`
   display: flex;
   gap: 20px;
   padding: 5px 24px;
+  overflow: hidden;          // 👈 muda de 'auto' para 'hidden'
   transition: all 0.2s ease;
-  overflow: auto;
 
-  @media (max-width: 1280px) {  // 👈 ganha espaço antes do zoom necessário
+  @media (max-width: 1280px) {
     padding: 16px 20px;
     gap: 16px;
   }
@@ -86,7 +86,7 @@ export const MainContent = styled.div`
     flex-direction: column;
     gap: 24px;
     padding: 16px;
-    overflow: auto;
+    overflow: auto;          // 👈 volta 'auto' no mobile se precisar
   }
 
   @media (max-width: 640px) {
@@ -103,19 +103,19 @@ export const TablesContainer = styled.div`
   display: flex;
   gap: 20px;
   min-width: 0;
-  height: 100%;
-  overflow: hidden;
+  height: 100%;              // 👈 garante altura total
+  overflow: hidden;          // 👈 sem scroll aqui
 
   & > * {
     flex: 1;
     min-width: 0;
+    height: 100%;            // 👈 cada tabela herda altura total
   }
 
-  // 👇 empilha as tabelas antes de precisar de zoom
   @media (max-width: 1200px) {
     flex-direction: column;
     gap: 20px;
-    overflow: visible;
+    overflow: visible;       // 👈 no empilhamento, permite altura automática
   }
 
   @media (max-width: 1024px) {
@@ -256,23 +256,22 @@ export const StyledTable = styled.div`
   border-radius: 24px;
   padding: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-
   width: 100%;
-  height: 100%;
-  overflow: auto; // scroll interno vertical + horizontal se necessário
+  height: 100%;              // 👈 preenche o espaço do pai
+  overflow: auto;            // 👈 scroll vertical + horizontal quando necessário
 
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.85rem;
-    min-width: 320px; // 👈 reduzido de 400px para caber sem zoom
+    min-width: 320px;
   }
 
   th, td {
-    padding: 10px 8px; // 👈 reduzido de 12px para ganhar espaço
+    padding: 10px 8px;
     text-align: left;
     border-bottom: 1px solid #e2e8f0;
-    white-space: nowrap; // 👈 evita quebra de linha desnecessária
+    white-space: nowrap;     // 👈 evita quebra, mas permite scroll horizontal
   }
 
   th {
@@ -281,9 +280,10 @@ export const StyledTable = styled.div`
     font-weight: 600;
     position: sticky;
     top: 0;
+    z-index: 1;
   }
 
-  // Para telas menores, permite quebra de linha e diminui padding
+  // Para telas menores, quebra linha e diminui padding
   @media (max-width: 768px) {
     th, td {
       white-space: normal;

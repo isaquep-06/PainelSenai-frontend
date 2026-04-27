@@ -22,8 +22,8 @@ function TableDashboard({ data = [] }) {
 
           <Tbody>
             {data.map((d) => (
-              <tr key={d.turma}>
-                <td className="td-turma">{d.turma}</td>
+              <tr key={d.id}>
+                <td className="td-turma">{d.turma?.trim().toUpperCase()}</td>
                 <td>{d.sala?.trim().toUpperCase()}</td>
               </tr>
             ))}

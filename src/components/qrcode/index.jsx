@@ -1,4 +1,4 @@
-import QR from '../../assets/qrcodeSenai.png'
+import QR from '../../assets/qrcodeNew.png'
 import * as S from './style.js'
 
 function QRCode() {

@@ -5,13 +5,18 @@ import styled from "styled-components";
 // =====================
 export const Body = styled.div`
   width: 100%;
-  height: 100vh;          // 🔥 trava a altura na tela
-  overflow: hidden;       // 🔥 remove scroll da página
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
   display: flex;
   flex-direction: column;
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  @media (max-width: 640px) {
+    min-height: 100vh;
+  }
 `;
 
 // =====================
@@ -25,6 +30,11 @@ export const SearchContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0 12px 10px;
+    gap: 6px;
   }
 `;
 
@@ -43,6 +53,12 @@ export const SearchInput = styled.input`
 
   &::placeholder {
     color: #94a3b8;
+  }
+
+  @media (max-width: 640px) {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    border-radius: 8px;
   }
 `;
 
@@ -64,6 +80,12 @@ export const ClearButton = styled.button`
     background: #cbd5e1;
     color: #475569;
   }
+
+  @media (max-width: 640px) {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
 `;
 
 // =====================
@@ -75,9 +97,11 @@ export const MainContent = styled.div`
   gap: 20px;
   padding: 5px 24px;
   transition: all 0.2s ease;
-  overflow: auto;
+  overflow: visible;
+  align-items: stretch;
+  min-height: calc(100vh - 130px);
 
-  @media (max-width: 1280px) {  // 👈 ganha espaço antes do zoom necessário
+  @media (max-width: 1280px) {
     padding: 16px 20px;
     gap: 16px;
   }
@@ -86,12 +110,18 @@ export const MainContent = styled.div`
     flex-direction: column;
     gap: 24px;
     padding: 16px;
-    overflow: auto;
+    min-height: auto;
+  }
+
+  @media (max-width: 768px) {
+    padding: 14px;
+    gap: 16px;
   }
 
   @media (max-width: 640px) {
-    padding: 12px;
-    gap: 16px;
+    padding: 10px;
+    gap: 12px;
+    min-height: auto;
   }
 `;
 
@@ -103,15 +133,16 @@ export const TablesContainer = styled.div`
   display: flex;
   gap: 20px;
   min-width: 0;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
+  overflow: visible;
+  align-items: stretch;
 
   & > * {
     flex: 1;
     min-width: 0;
+    min-height: 100%;
   }
 
-  // 👇 empilha as tabelas antes de precisar de zoom
   @media (max-width: 1200px) {
     flex-direction: column;
     gap: 20px;
@@ -124,7 +155,11 @@ export const TablesContainer = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+  }
+
+  @media (max-width: 640px) {
+    gap: 12px;
   }
 `;
 
@@ -137,17 +172,23 @@ export const RightSide = styled.div`
   flex-direction: column;
   gap: 20px;
   min-width: 280px;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
 
   @media (max-width: 1024px) {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
+    min-height: auto;
+  }
+
+  @media (max-width: 768px) {
+    gap: 16px;
   }
 
   @media (max-width: 640px) {
     flex-direction: column;
+    gap: 12px;
+    min-width: 100%;
   }
 `;
 
@@ -164,6 +205,7 @@ export const VideoContainer = styled.div`
   box-shadow: 1px 3px 3px 0px rgb(0 0 0 / 50%);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
+  min-height: 300px;
 
   &:hover {
     transform: scale(1.01);
@@ -180,6 +222,21 @@ export const VideoContainer = styled.div`
   img {
     object-fit: fill;
     background: #00000010;
+  }
+
+  @media (max-width: 1024px) {
+    border-radius: 20px;
+    min-height: 250px;
+  }
+
+  @media (max-width: 768px) {
+    border-radius: 16px;
+    min-height: 220px;
+  }
+
+  @media (max-width: 640px) {
+    border-radius: 12px;
+    min-height: 180px;
   }
 `;
 
@@ -205,6 +262,7 @@ export const QrContainer = styled.div`
 
   width: 100%;
   height: 100%;
+  min-height: 300px;
 
   &:hover {
     transform: translateY(-6px);
@@ -238,12 +296,40 @@ export const QrContainer = styled.div`
     color: #5b6e8c;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 1024px) {
+    border-radius: 24px;
     padding: 16px 10px;
+    gap: 10px;
+    min-height: 250px;
+  }
+
+  @media (max-width: 768px) {
+    border-radius: 20px;
+    padding: 14px 10px;
     gap: 8px;
+    min-height: 220px;
+
+    img {
+      width: min(120px, 40%);
+    }
+  }
+
+  @media (max-width: 640px) {
+    border-radius: 16px;
+    padding: 12px 8px;
+    gap: 6px;
+    min-height: 180px;
 
     img {
       width: 90px;
+    }
+
+    h2 {
+      font-size: 0.95rem;
+    }
+
+    p {
+      font-size: 0.8rem;
     }
   }
 `;

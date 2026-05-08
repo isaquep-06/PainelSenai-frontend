@@ -17,6 +17,19 @@ export const Footer = styled.footer`
 
   font-size: 14px;
 
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 20px;
+    justify-content: center;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 12px;
+    padding: 10px 15px;
+    gap: 8px;
+  }
+
   /* bloco central (copyright) */
   .div-center {
     display: flex;

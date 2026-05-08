@@ -2,10 +2,15 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
-  min-height: 92vh;
+  min-height: calc(100vh - 72px);
+  height: calc(100vh - 72px);
   padding: 24px;
   background: #f8fafc;
   font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const Header = styled.div`
@@ -24,9 +29,11 @@ export const Header = styled.div`
 `;
 
 export const Grid = styled.div`
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+  align-content: start;
 
   @media (max-width: 1100px) {
     grid-template-columns: repeat(2, 1fr);

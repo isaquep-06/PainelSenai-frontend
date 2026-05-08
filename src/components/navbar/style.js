@@ -76,7 +76,8 @@ export const LiClick = styled.li`
   list-style: none;
   font-size: 22px;
   font-weight: 600;
-  cursor: pointer;
+  cursor: ${({ isDisabled }) =>
+    isDisabled ? "default" : "pointer"};
   padding: 8px 12px;
   border-radius: 8px;
   transition: 0.25s;
@@ -84,6 +85,8 @@ export const LiClick = styled.li`
     active ? "#fff" : "#1f2937"};
   background: ${({ active }) =>
     active ? "#0063ff" : "transparent"};
+  opacity: ${({ isDisabled }) =>
+    isDisabled ? 0.75 : 1};
   white-space: nowrap;
 
   &:hover {
@@ -199,5 +202,32 @@ export const SpanHora = styled.span`
   @media (max-width: 950px) and (orientation: landscape) {
     font-size: 14px;
     letter-spacing: 0;
+  }
+`;
+
+export const ModeBadge = styled.li`
+  list-style: none;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  background: ${({ "data-mode": mode }) =>
+    mode === "automatico"
+      ? "#dbeafe"
+      : "#fee2e2"};
+  color: ${({ "data-mode": mode }) =>
+    mode === "automatico"
+      ? "#1d4ed8"
+      : "#b91c1c"};
+
+  @media (max-width: 768px) {
+    font-size: 0.72rem;
+    padding: 6px 10px;
+  }
+
+  @media (max-width: 950px) and (orientation: landscape) {
+    font-size: 0.65rem;
+    padding: 4px 8px;
   }
 `;

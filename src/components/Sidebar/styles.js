@@ -152,9 +152,11 @@ export const UpdateValue = styled.div`
   font-weight: 600;
   background: #f3f4f6;
   padding: 8px 12px;
-  border-radius: 40px;
+  border-radius: 20px;
   color: #1f2937;
   width: 100%;
+  line-height: 1.5;
+  white-space: normal;
 `;
 
 export const RefreshButton = styled.button`
@@ -194,4 +196,81 @@ export const SenaiBadge = styled.div`
   font-weight: 500;
   width: fit-content;
   margin: 0 auto;
+`;
+
+export const InfoLabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+`;
+
+export const HistoryButton = styled.button`
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background: #e0ecff;
+    transform: scale(1.1);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+export const HistoryModal = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  min-width: 280px;
+  max-width: 300px;
+  z-index: 1000;
+  margin-top: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+`;
+
+export const HistoryItem = styled.div`
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.85rem;
+  color: #374151;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &:hover {
+    background: #f9fafb;
+  }
+`;
+
+export const HistoryItemTime = styled.div`
+  font-weight: 600;
+  color: #2563eb;
+  margin-bottom: 4px;
+`;
+
+export const HistoryItemContent = styled.div`
+  color: #6b7280;
+  font-size: 0.8rem;
+`;
+
+export const HistoryContainer = styled.div`
+  position: relative;
 `;

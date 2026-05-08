@@ -20,6 +20,16 @@ export const Nav = styled.nav`
   z-index: 1000;
 
   box-shadow: -1px -2px 7px #1e1e1e52;
+
+  @media (max-width: 768px) {
+    height: 60px;
+    padding: 0 16px;
+  }
+
+  @media (max-width: 640px) {
+    height: 55px;
+    padding: 0 12px;
+  }
 `;
 
 /* =========================
@@ -33,6 +43,14 @@ export const UL = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+
+  @media (max-width: 768px) {
+    gap: 10px;
+  }
+
+  @media (max-width: 640px) {
+    gap: 6px;
+  }
 `;
 
 /* =========================
@@ -128,5 +146,14 @@ padding: 8px 14px;
 
     b {
       color: rgb(14, 95, 177);
+    }
+
+    @media (max-width: 768px) {
+      font-size: 0.75rem;
+      padding: 6px 10px;
+    }
+
+    @media (max-width: 640px) {
+      display: none;
     }
 `;

@@ -3,10 +3,14 @@ import {
   Table,
   Thead,
   Tbody,
-  DivTudo
+  DivTudo,
 } from "./style.js";
 
-function TableDashboard({ data = [] }) {
+function TableDashboard({
+  data = [],
+  showActions = false,
+  onSelectRow,
+}) {
   if (!Array.isArray(data)) return null;
 
   return (
@@ -16,15 +20,41 @@ function TableDashboard({ data = [] }) {
           <Thead>
             <tr>
               <th>Turmas</th>
-              <th>Espaço de aula</th>
+              <th>Espaco de aula</th>
+              {showActions && (
+                <th className="th-action">
+                  Acesso
+                </th>
+              )}
             </tr>
           </Thead>
 
           <Tbody>
-            {data.map((d) => (
-              <tr key={d.turma}>
-                <td className="td-turma">{d.turma}</td>
-                <td>{d.sala?.trim().toUpperCase()}</td>
+            {data.map((d, index) => (
+              <tr
+                key={`${d.turma}-${d.sala}-${index}`}
+              >
+                <td className="td-turma">
+                  {d.turma}
+                </td>
+                <td>
+                  {d.sala
+                    ?.trim()
+                    .toUpperCase()}
+                </td>
+                {showActions && (
+                  <td className="td-action">
+                    <button
+                      type="button"
+                      className="action-button"
+                      onClick={() =>
+                        onSelectRow?.(d)
+                      }
+                    >
+                      ➔
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </Tbody>

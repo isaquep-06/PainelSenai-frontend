@@ -14,6 +14,18 @@ export const TablesContainer = styled.div`
 
   padding: 10px 20px;
   overflow: hidden;
+
+  @media (max-width: 1200px) {
+    gap: 20px;
+    padding: 10px 15px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px 10px;
+    overflow-y: auto;
+  }
 `;
 
 export const DivTudo = styled.div`
@@ -43,6 +55,25 @@ export const Thead = styled.thead`
     font-size: clamp(14px, 1vw, 20px);
     padding: 10px 12px;
     text-align: left;
+  }
+
+  .th-action {
+    width: 72px;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    th {
+      font-size: clamp(12px, 2vw, 16px);
+      padding: 8px 10px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    th {
+      font-size: 12px;
+      padding: 6px 8px;
+    }
   }
 `;
 
@@ -80,5 +111,28 @@ tr {
 
   td {
     color: #374151;
+  }
+
+  .td-action {
+    text-align: center;
+  }
+
+  .action-button {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  .action-button:hover {
+    background: #2563eb;
+    color: white;
+    transform: translateX(2px);
   }
 `;

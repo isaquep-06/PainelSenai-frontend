@@ -1,53 +1,84 @@
-import * as S from './style.js';
-import logo from '../../assets/logo_senai.svg';
-import { useEffect, useState } from 'react';
+import * as S from "./style.js";
+import logo from "../../assets/logo_senai.svg";
+import { useEffect, useState } from "react";
 
-export function NavBar({ turno, setTurno, onOpenSidebar }) {
-  // Estado para guardar o horario atual
-  const [agora, setAgora] = useState(new Date())
+export function NavBar({
+  turno,
+  setTurno,
+  isTurnoAutomatico = true,
+  disableTurnoSelection = false,
+  showSidebarButton = true,
+  onOpenSidebar,
+}) {
+  const [agora, setAgora] = useState(new Date());
 
-  // useEfect para atualização
   useEffect(() => {
     const intervalo = setInterval(() => {
-      setAgora(new Date())
-    }, 1000)
+      setAgora(new Date());
+    }, 1000);
 
     return () => clearInterval(intervalo);
   }, []);
 
-  // Separando -> HORA | MINUTOS | SEGUNDOS
-  const hora = agora.getHours().toString().padStart(2, '0')
-  const minutos = agora.getMinutes().toString().padStart(2, '0')
-  const segundos = agora.getSeconds().toString().padStart(2, '0')
+  const hora = agora
+    .getHours()
+    .toString()
+    .padStart(2, "0");
+  const minutos = agora
+    .getMinutes()
+    .toString()
+    .padStart(2, "0");
 
-  // Data em formato brasileiro -> DIA/MES/ANO
   const data = new Date();
-  const dataBR = data.toLocaleDateString('pt-BR');
-
+  const dataBR = data.toLocaleDateString("pt-BR");
 
   return (
     <S.Nav>
       <S.UL>
         <S.LiClick
           active={turno === "matutino"}
-          onClick={() => setTurno("matutino")}
+          isDisabled={disableTurnoSelection}
+          onClick={() =>
+            !disableTurnoSelection &&
+            setTurno("matutino")
+          }
         >
           Matutino
         </S.LiClick>
 
         <S.LiClick
           active={turno === "vespertino"}
-          onClick={() => setTurno("vespertino")}
+          isDisabled={disableTurnoSelection}
+          onClick={() =>
+            !disableTurnoSelection &&
+            setTurno("vespertino")
+          }
         >
           Vespertino
         </S.LiClick>
 
         <S.LiClick
           active={turno === "noturno"}
-          onClick={() => setTurno("noturno")}
+          isDisabled={disableTurnoSelection}
+          onClick={() =>
+            !disableTurnoSelection &&
+            setTurno("noturno")
+          }
         >
           Noturno
         </S.LiClick>
+
+        <S.ModeBadge
+          data-mode={
+            isTurnoAutomatico
+              ? "automatico"
+              : "manual"
+          }
+        >
+          {isTurnoAutomatico
+            ? "Turno automatico"
+            : "Turno manual"}
+        </S.ModeBadge>
       </S.UL>
 
       <S.UL>
@@ -66,11 +97,13 @@ export function NavBar({ turno, setTurno, onOpenSidebar }) {
         </S.DateBlock>
       </S.DateTimeUL>
 
-      <S.UL>
-        <S.SidebarButton onClick={onOpenSidebar}>
-          Info
-        </S.SidebarButton>
-      </S.UL>
+      {showSidebarButton && (
+        <S.UL>
+          <S.SidebarButton onClick={onOpenSidebar}>
+            Info
+          </S.SidebarButton>
+        </S.UL>
+      )}
     </S.Nav>
   );
 }

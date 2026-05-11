@@ -1,6 +1,7 @@
 import * as S from "./style.js";
 import logo from "../../assets/logo_senai.svg";
 import { useEffect, useState } from "react";
+import { safeLocaleDateString } from "../../utils/intlCompat.js";
 
 export function NavBar({
   turno,
@@ -30,7 +31,7 @@ export function NavBar({
     .padStart(2, "0");
 
   const data = new Date();
-  const dataBR = data.toLocaleDateString("pt-BR");
+  const dataBR = safeLocaleDateString(data, "pt-BR");
 
   return (
     <S.Nav>

@@ -3,6 +3,11 @@ import React, {
   useState,
 } from "react";
 import * as S from "./styles.js";
+import {
+  safeRelativeTimeFormat,
+  safeLocaleTimeString,
+  safeLocaleDateString,
+} from "../../utils/intlCompat.js";
 
 function parseLastUpdateDate(lastUpdate) {
   const rawTimestamp =
@@ -56,28 +61,31 @@ function formatTimeAgo(lastUpdate) {
     60000
   );
 
-  const rtf = new Intl.RelativeTimeFormat(
-    "pt-BR",
-    { numeric: "auto" }
-  );
+  try {
+    if (Math.abs(diffMinutes) < 60) {
+      return safeRelativeTimeFormat(diffMinutes, "minute", "pt-BR");
+    }
 
-  if (Math.abs(diffMinutes) < 60) {
-    return rtf.format(diffMinutes, "minute");
+    const diffHours = Math.round(
+      diffMinutes / 60
+    );
+
+    if (Math.abs(diffHours) < 24) {
+      return safeRelativeTimeFormat(diffHours, "hour", "pt-BR");
+    }
+
+    const diffDays = Math.round(
+      diffHours / 24
+    );
+
+    return safeRelativeTimeFormat(diffDays, "day", "pt-BR");
+  } catch (error) {
+    console.error('[Sidebar] Erro ao formatar tempo relativo:', error.message);
+    // Fallback: mostrar data e hora
+    const hora = updateDate.getHours().toString().padStart(2, '0');
+    const minuto = updateDate.getMinutes().toString().padStart(2, '0');
+    return `${updateDate.getDate()}/${updateDate.getMonth() + 1} ${hora}:${minuto}`;
   }
-
-  const diffHours = Math.round(
-    diffMinutes / 60
-  );
-
-  if (Math.abs(diffHours) < 24) {
-    return rtf.format(diffHours, "hour");
-  }
-
-  const diffDays = Math.round(
-    diffHours / 24
-  );
-
-  return rtf.format(diffDays, "day");
 }
 
 function buildLastUpdateText(lastUpdate) {
@@ -203,24 +211,24 @@ export function Sidebar({
     }
   }, [showHistory]);
 
-  const formattedTime =
-    currentTime.toLocaleTimeString(
-      "pt-BR",
-      {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }
-    );
-  const formattedDate =
-    currentTime.toLocaleDateString(
-      "pt-BR",
-      {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      }
-    );
+  const formattedTime = safeLocaleTimeString(
+    currentTime,
+    "pt-BR",
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }
+  );
+  const formattedDate = safeLocaleDateString(
+    currentTime,
+    "pt-BR",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }
+  );
 
   const formattedLastUpdate =
     buildLastUpdateText(lastUpdate);

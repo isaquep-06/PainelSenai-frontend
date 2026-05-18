@@ -1,15 +1,18 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 
-export default function Anuncio({ midia, onNext }) {
+function Anuncio({ midia, onNext }) {
   const timeoutRef = useRef(null);
+  const mediaUrl = midia?.url;
 
   useEffect(() => {
-    // limpa qualquer timer antigo
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    // IMAGEM → 30s
+    if (!midia || !mediaUrl) {
+      return undefined;
+    }
+
     if (midia.type === "image") {
       timeoutRef.current = setTimeout(() => {
         onNext();
@@ -21,27 +24,35 @@ export default function Anuncio({ midia, onNext }) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [midia, onNext]);
+  }, [mediaUrl, midia, onNext]);
 
-  //  VIDEO → até terminar
+  if (!midia || !mediaUrl) {
+    return null;
+  }
+
   if (midia.type === "video") {
     return (
       <video
-        src={midia.src}
+        src={mediaUrl}
         autoPlay
         muted
-        onEnded={onNext} //  chave aqui
+        playsInline
+        preload="metadata"
+        onEnded={onNext}
         style={{ width: "100%", height: "100%", objectFit: "fill" }}
       />
     );
   }
 
-  //  IMAGEM
   return (
     <img
-      src={midia.src}
+      src={mediaUrl}
       alt="anuncio"
+      loading="eager"
+      decoding="async"
       style={{ width: "100%", height: "100%", objectFit: "fill" }}
     />
   );
 }
+
+export default memo(Anuncio);

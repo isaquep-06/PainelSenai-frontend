@@ -13,16 +13,28 @@ export default function UploadAnuncio({ onSuccess }) {
     }
 
     try {
-      await uploadFile(file);
+      console.log("Arquivo selecionado para upload:", {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      });
+
+      const response = await uploadFile(file);
+      console.log("URL recebida do backend:", response?.url);
       toast.success("Upload realizado com sucesso!");
       setFile(null);
 
       if (onSuccess) {
-        onSuccess();
+        onSuccess(response);
       }
     } catch (err) {
       console.error(err);
-      toast.error("Erro no upload");
+      const errorMessage =
+        err?.response?.data?.details ||
+        err?.response?.data?.message ||
+        "Erro no upload";
+
+      toast.error(errorMessage);
     }
   };
 
@@ -37,6 +49,7 @@ export default function UploadAnuncio({ onSuccess }) {
         <label style={fileLabel}>
           <input
             type="file"
+            accept="image/*"
             style={input}
             onChange={(e) => setFile(e.target.files[0])}
           />

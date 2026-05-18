@@ -13,9 +13,13 @@ function TableDashboard({
 }) {
   if (!Array.isArray(data)) return null;
 
+  const rowCount = data.length || 1;
+  const compactScale =
+    rowCount > 18 ? "dense" : rowCount > 12 ? "compact" : "normal";
+
   return (
-    <DivTudo>
-      <TableWrapper>
+    <DivTudo data-density={compactScale}>
+      <TableWrapper data-density={compactScale}>
         <Table>
           <Thead>
             <tr>

@@ -5,8 +5,8 @@ import styled from "styled-components";
 // =====================
 export const Body = styled.div`
   width: 100%;
-  min-height: 100vh;
-  overflow-y: auto;
+  height: 100vh;
+  overflow: hidden;
   overflow-x: hidden;
 
   background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
@@ -94,12 +94,12 @@ export const ClearButton = styled.button`
 export const MainContent = styled.div`
   flex: 1;
   display: flex;
-  gap: 20px;
+  gap: 5px;
   padding: 5px 24px;
   transition: all 0.2s ease;
-  overflow: visible;
+  overflow: hidden;
   align-items: stretch;
-  min-height: calc(100vh - 130px);
+  min-height: 0;
 
   @media (max-width: 1280px) {
     padding: 16px 20px;
@@ -110,7 +110,7 @@ export const MainContent = styled.div`
     flex-direction: column;
     gap: 24px;
     padding: 16px;
-    min-height: auto;
+    min-height: 0;
   }
 
   @media (max-width: 768px) {
@@ -121,7 +121,7 @@ export const MainContent = styled.div`
   @media (max-width: 640px) {
     padding: 10px;
     gap: 12px;
-    min-height: auto;
+    min-height: 0;
   }
 `;
 
@@ -131,35 +131,35 @@ export const MainContent = styled.div`
 export const TablesContainer = styled.div`
   flex: 1.2;
   display: flex;
-  gap: 20px;
+  gap: 5px;
   min-width: 0;
-  min-height: 100%;
-  overflow: visible;
+  min-height: 0;
+  overflow: hidden;
   align-items: stretch;
 
   & > * {
     flex: 1;
     min-width: 0;
-    min-height: 100%;
+    min-height: 0;
   }
 
   @media (max-width: 1200px) {
     flex-direction: column;
-    gap: 20px;
-    overflow: visible;
+    gap: 5px;
+    overflow: hidden;
   }
 
   @media (max-width: 1024px) {
-    gap: 16px;
+    gap: 5px;
   }
 
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 16px;
+    gap: 5px;
   }
 
   @media (max-width: 640px) {
-    gap: 12px;
+    gap: 5px;
   }
 `;
 
@@ -172,13 +172,13 @@ export const RightSide = styled.div`
   flex-direction: column;
   gap: 20px;
   min-width: 280px;
-  min-height: 100%;
+  min-height: 0;
 
   @media (max-width: 1024px) {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
-    min-height: auto;
+    min-height: 0;
   }
 
   @media (max-width: 768px) {
@@ -205,7 +205,8 @@ export const VideoContainer = styled.div`
   box-shadow: 1px 3px 3px 0px rgb(0 0 0 / 50%);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
-  min-height: 300px;
+  min-height: 0;
+  height: 100%;
 
   &:hover {
     transform: scale(1.01);
@@ -226,7 +227,7 @@ export const VideoContainer = styled.div`
 
   @media (max-width: 1024px) {
     border-radius: 20px;
-    min-height: 250px;
+    min-height: 220px;
   }
 
   @media (max-width: 768px) {

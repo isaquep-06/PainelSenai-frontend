@@ -11,7 +11,6 @@ export const TablesContainer = styled.div`
   flex: 1;
   display: flex;
   gap: 30px;
-
   padding: 10px 20px;
   overflow: hidden;
 
@@ -23,71 +22,76 @@ export const TablesContainer = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 15px;
-    padding: 10px 10px;
-    overflow-y: auto;
+    padding: 10px;
+    overflow: hidden;
   }
 `;
 
 export const DivTudo = styled.div`
   flex: 1;
-  height: 100%; /*  1. Garante que a div externa ocupe toda a altura do container pai */
+  height: 100%;
+  min-height: 0;
 `;
 
 export const TableWrapper = styled.div`
   width: 100%;
-  height: 100%; /* 2. Repassa essa altura total para o wrapper da tabela */
-  background-color: white; /* Mantém o fundo branco caso falte alguma coisa */
+  height: 100%;
+  min-height: 0;
+  background-color: white;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
 `;
 
 export const Table = styled.table`
   width: 100%;
-  height: 100%; /*  3. A MÁGICA: Faz a tabela esticar e preencher todo o espaço vazio */
+  height: 100%;
   border-collapse: collapse;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
+  table-layout: fixed;
 `;
 
 export const Thead = styled.thead`
   background: #1e3a8a;
   color: white;
-  height: 1px; /* 4. Trava a altura do cabeçalho para que apenas as linhas da tabela (Tbody) estiquem */
+  height: 1px;
 
   th {
-    font-size: clamp(14px, 1vw, 20px);
-    padding: 10px 12px;
+    font-size: 0.92rem;
+    padding: 8px 10px;
     text-align: left;
   }
 
   .th-action {
-    width: 72px;
+    width: 48px;
     text-align: center;
   }
 
   @media (max-width: 768px) {
     th {
-      font-size: clamp(12px, 2vw, 16px);
-      padding: 8px 10px;
+      font-size: 0.78rem;
+      padding: 7px 8px;
     }
   }
 
   @media (max-width: 640px) {
     th {
-      font-size: 12px;
-      padding: 6px 8px;
+      font-size: 0.72rem;
+      padding: 6px 7px;
     }
   }
 `;
 
 export const Tbody = styled.tbody`
+  .td-turma {
+    color: #111827 !important;
+    font-weight: bold !important;
+  }
 
-.td-turma {
-  color: #111827 !important;
-  font-weight: bold !important;
-}
+  tr {
+    text-align: left;
+    background-color: white;
+  }
 
-tr {
-  text-align: left;
-  background-color: white;
-}
   tr:nth-child(even) {
     background: #e5e7eb;
   }
@@ -98,10 +102,13 @@ tr {
 
   th,
   td {
-    padding: 8px 12px;
-    font-size: 18px;
+    padding: 5px 8px;
+    font-size: 0.82rem;
     border-bottom: 1px solid #d1d5db;
-    line-height: 1.2;
+    line-height: 1.05;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   th {
@@ -115,16 +122,17 @@ tr {
 
   .td-action {
     text-align: center;
+    width: 48px;
   }
 
   .action-button {
-    width: 38px;
-    height: 38px;
+    width: 24px;
+    height: 24px;
     border: none;
     border-radius: 50%;
     background: #dbeafe;
     color: #1d4ed8;
-    font-size: 1.2rem;
+    font-size: 0.78rem;
     font-weight: 800;
     cursor: pointer;
     transition: 0.2s ease;
@@ -134,5 +142,30 @@ tr {
     background: #2563eb;
     color: white;
     transform: translateX(2px);
+  }
+
+  ${TableWrapper}[data-density="compact"] & th,
+  ${TableWrapper}[data-density="compact"] & td {
+    padding: 4px 7px;
+    font-size: 0.75rem;
+  }
+
+  ${TableWrapper}[data-density="compact"] & .action-button {
+    width: 22px;
+    height: 22px;
+    font-size: 0.72rem;
+  }
+
+  ${TableWrapper}[data-density="dense"] & th,
+  ${TableWrapper}[data-density="dense"] & td {
+    padding: 3px 6px;
+    font-size: 0.68rem;
+    line-height: 1;
+  }
+
+  ${TableWrapper}[data-density="dense"] & .action-button {
+    width: 18px;
+    height: 18px;
+    font-size: 0.62rem;
   }
 `;

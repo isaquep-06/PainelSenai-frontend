@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import UploadAnuncio from "../../components/forms/anuncioForm/uploadAnuncio";
 import NavBarAdmin from "../../components/navbarAdmin";
@@ -14,18 +14,22 @@ export default function AnuncioPage() {
   usePageTitle("Anuncio");
   const [uploads, setUploads] = useState([]);
 
-  const loadUploads = async () => {
+  const loadUploads = useCallback(async () => {
     try {
       const data = await getUploads();
       setUploads(data);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    loadUploads();
-  }, []);
+    const timerId = window.setTimeout(() => {
+      void loadUploads();
+    }, 0);
+
+    return () => window.clearTimeout(timerId);
+  }, [loadUploads]);
 
   const toggleAtivo = async (item) => {
     try {
@@ -58,12 +62,24 @@ export default function AnuncioPage() {
     }
   };
 
+  const handleUploadSuccess = useCallback(
+    (uploadedMedia) => {
+      if (uploadedMedia?.id && uploadedMedia?.url) {
+        setUploads((prev) => [uploadedMedia, ...prev]);
+        return;
+      }
+
+      loadUploads();
+    },
+    [loadUploads]
+  );
+
   return (
     <>
       <NavBarAdmin />
 
       <div style={container}>
-        <UploadAnuncio onSuccess={loadUploads} />
+        <UploadAnuncio onSuccess={handleUploadSuccess} />
 
         <h1 style={title}>Gerenciar Anuncios</h1>
 
@@ -72,9 +88,9 @@ export default function AnuncioPage() {
             <div key={item.id} style={card}>
               <div style={mediaArea}>
                 {item.type === "video" ? (
-                  <video src={item.src} style={media} controls />
+                  <video src={item.url} style={media} controls />
                 ) : (
-                  <img src={item.src} alt="anuncio" style={media} />
+                  <img src={item.url} alt="anuncio" style={media} loading="lazy" />
                 )}
               </div>
 
@@ -134,15 +150,20 @@ const card = {
 
 const mediaArea = {
   width: "100%",
-  height: "220px",
+  height: "180px",
   overflow: "hidden",
   borderRadius: "12px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "#f1f5f9",
 };
 
 const media = {
   width: "100%",
   height: "100%",
-  objectFit: "cover",
+  objectFit: "contain",
+  display: "block",
 };
 
 const info = {

@@ -8,9 +8,6 @@ const apiBaseUrl = (
 const api = axios.create({
   baseURL: apiBaseUrl,
   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 api.interceptors.request.use((config) => {
@@ -23,6 +20,20 @@ api.interceptors.request.use((config) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+  }
+
+  const isFormData =
+    typeof FormData !== "undefined" &&
+    config.data instanceof FormData;
+
+  if (isFormData) {
+    delete config.headers["Content-Type"];
+    console.log("Request multipart detectada:", {
+      url: config.url,
+      method: config.method,
+    });
+  } else if (!config.headers["Content-Type"]) {
+    config.headers["Content-Type"] = "application/json";
   }
 
   return config;

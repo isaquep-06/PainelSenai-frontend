@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 import {
   useEffect,
+  useRef,
   useState,
   useCallback,
   useMemo,
@@ -21,6 +22,7 @@ import {
 } from "../../services/dashboard.js";
 import { getSalas } from "../../services/salaServices.js";
 import { getTurma } from "../../services/turmaService.js";
+import { getUploads } from "../../services/uploadService.js";
 import { usePageTitle } from "../../styles/pageName.jsx";
 
 const socketUrl =
@@ -68,7 +70,7 @@ function getTurnoAtual() {
 function Dashboard() {
   usePageTitle("Dashboard");
 
-  const [socket, setSocket] = useState(null);
+  const socketRef = useRef(null);
   const [turno, setTurno] = useState(getTurnoAtual());
   const [isTurnoAutomatico, setIsTurnoAutomatico] =
     useState(true);
@@ -119,45 +121,63 @@ function Dashboard() {
     };
   }, []);
 
-  useEffect(() => {
-    const resize = () =>
-      setIsMobile(window.innerWidth <= 768);
+  const nextMidia = useCallback(() => {
+    setIndexMidia((prev) => {
+      if (midias.length === 0) {
+        return 0;
+      }
 
-    window.addEventListener("resize", resize);
+      return (prev + 1) % midias.length;
+    });
+  }, [midias.length]);
 
-    return () =>
-      window.removeEventListener("resize", resize);
-  }, []);
-
-  function nextMidia() {
-    if (midias.length === 0) return;
-
-    setIndexMidia(
-      (prev) => (prev + 1) % midias.length
-    );
-  }
-
-  async function loadMidias() {
+  const loadMidias = useCallback(async () => {
     try {
-      const res = await api.get("/upload");
-
-      const ativos = (res.data || []).filter(
-        (item) => item.active === true
+      const data = await getUploads();
+      const ativos = data.filter(
+        (item) => item.active === true && item.url
       );
 
-      setMidias(ativos);
-      setIndexMidia(0);
+      setMidias((prev) => {
+        setIndexMidia((currentIndex) => {
+          if (ativos.length === 0) {
+            return 0;
+          }
+
+          const currentMediaId =
+            prev[currentIndex]?.id;
+
+          if (!currentMediaId) {
+            return Math.min(
+              currentIndex,
+              ativos.length - 1
+            );
+          }
+
+          const nextIndex = ativos.findIndex(
+            (item) => item.id === currentMediaId
+          );
+
+          return nextIndex >= 0 ? nextIndex : 0;
+        });
+
+        return ativos;
+      });
     } catch (error) {
       console.error(
         "Erro ao carregar midias:",
         error
       );
     }
-  }
+  }, []);
 
   useEffect(() => {
-    loadMidias();
-  }, []);
+    const timerId = window.setTimeout(() => {
+      void loadMidias();
+    }, 0);
+
+    return () => window.clearTimeout(timerId);
+  }, [loadMidias]);
 
   useEffect(() => {
     const syncUserData = () => {
@@ -208,7 +228,11 @@ function Dashboard() {
   );
 
   useEffect(() => {
-    loadReferenceData();
+    const timerId = window.setTimeout(() => {
+      void loadReferenceData();
+    }, 0);
+
+    return () => window.clearTimeout(timerId);
   }, [loadReferenceData]);
 
   useEffect(() => {
@@ -253,10 +277,7 @@ function Dashboard() {
   }, []);
 
   const loadDashboardData = useCallback(
-    async (
-      showToast = false,
-      timestamp = null
-    ) => {
+    async (showToast = false) => {
       try {
         const res = await api.get(
           `/dashboard?turno=${turno}`
@@ -284,7 +305,11 @@ function Dashboard() {
   );
 
   useEffect(() => {
-    loadDashboardData();
+    const timerId = window.setTimeout(() => {
+      void loadDashboardData();
+    }, 0);
+
+    return () => window.clearTimeout(timerId);
   }, [turno, loadDashboardData]);
 
   useEffect(() => {
@@ -298,13 +323,17 @@ function Dashboard() {
       loadMidias();
     });
 
-    setSocket(newSocket);
+    socketRef.current = newSocket;
 
-    return () =>
+    return () => {
+      socketRef.current = null;
       newSocket.disconnect();
-  }, [loadDashboardData]);
+    };
+  }, [loadDashboardData, loadMidias]);
 
   useEffect(() => {
+    const socket = socketRef.current;
+
     if (!socket) return;
 
     let timeout;
@@ -317,10 +346,7 @@ function Dashboard() {
         clearTimeout(timeout);
 
         timeout = setTimeout(() => {
-          loadDashboardData(
-            false,
-            event?.timestamp
-          );
+          loadDashboardData(false);
         }, 300);
       }
     };
@@ -347,9 +373,9 @@ function Dashboard() {
       );
     };
   }, [
-    socket,
     turno,
     loadDashboardData,
+    loadMidias,
   ]);
 
   const enrichedData = useMemo(() => {
@@ -613,7 +639,7 @@ function Dashboard() {
         </S.RightSide>
       </S.MainContent>
 
-      {!isMobile && <QRCode />}
+      {!isMobile && sortedData.length <= 16 && <QRCode />}
 
       <Sidebar
         isOpen={isSidebarOpen}

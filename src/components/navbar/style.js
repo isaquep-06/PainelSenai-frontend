@@ -231,3 +231,34 @@ export const ModeBadge = styled.li`
     padding: 4px 8px;
   }
 `;
+
+export const TVButton = styled.button`
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #2563eb;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    transform: scale(1.03);
+    background: #2563eb;
+    color: #ffffff;
+  }
+
+  @media (max-width: 768px) {
+    width: 42px;
+    height: 42px;
+  }
+
+  @media (max-width: 950px) and (orientation: landscape) {
+    width: 32px;
+    height: 32px;
+  }
+`;

@@ -33,6 +33,10 @@ export function NavBar({
   const data = new Date();
   const dataBR = safeLocaleDateString(data, "pt-BR");
 
+  const handleOpenTvPage = () => {
+    window.location.assign("/tv/index.html");
+  };
+
   return (
     <S.Nav>
       <S.UL>
@@ -100,6 +104,26 @@ export function NavBar({
 
       {showSidebarButton && (
         <S.UL>
+          <S.TVButton
+            type="button"
+            onClick={handleOpenTvPage}
+            title="Abrir pagina da TV"
+            aria-label="Abrir pagina da TV"
+          >
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="2" y="7" width="20" height="15" rx="2" ry="2" />
+              <polyline points="17 2 12 7 7 2" />
+            </svg>
+          </S.TVButton>
           <S.SidebarButton onClick={onOpenSidebar}>
             Info
           </S.SidebarButton>

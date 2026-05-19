@@ -1,7 +1,16 @@
 {
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/tv",
+      "destination": "/tv/index.html",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!tv/|assets/|src/|favicon.ico|robots.txt|manifest.json|sw.js|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]

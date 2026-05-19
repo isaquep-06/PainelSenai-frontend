@@ -20,10 +20,6 @@
     });
   </script>
   <link rel="icon" type="image/png" href="/tv/favicon-senai.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet" />
   <link rel="stylesheet" href="/tv/style.css" />
   <title>Painel SENAI TV</title>
 </head>
@@ -45,7 +41,7 @@
       </div>
 
       <div class="topbar__section topbar__section--center">
-        <img class="brand-logo" src="/tv/logo_senai.svg" alt="SENAI" />
+        <img class="brand-logo" src="/tv/logo_senai.svg" alt="SENAI" width="206" height="34" decoding="async" />
       </div>
 
       <div class="topbar__section topbar__section--right">
@@ -102,11 +98,14 @@
         <div class="media-card">
           <div class="media-stage" id="mediaStage">
             <div class="media-empty" id="mediaEmpty">Nenhum anuncio ativo</div>
+            <img class="media-asset media-asset--image" id="mediaImage" alt="anuncio" width="1600" height="900"
+              decoding="async" />
+            <video class="media-asset media-asset--video" id="mediaVideo" playsinline muted preload="metadata"></video>
           </div>
         </div>
 
-        <section class="qr-card" id="qrCard" hidden>
-          <img src="/tv/qrcodeSenai.png" alt="QR Code SENAI" />
+        <section class="qr-card" id="qrCard" aria-hidden="true">
+          <img src="/tv/qrcodeSenai.png" alt="QR Code SENAI" width="1000" height="1000" decoding="async" />
           <h2>Acompanhe em tempo real</h2>
           <p>Escaneie o QR Code</p>
           <span class="qr-card__signature">

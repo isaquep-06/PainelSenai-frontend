@@ -4,7 +4,7 @@
   var API_BASE_URL =
     (window.__PAINEL_API_URL__ ||
       localStorage.getItem("PainelSenai:ApiUrl") ||
-      "http://localhost:3000/").replace(/\/+$/, "");
+      "https://painelsenai-production.up.railway.app/").replace(/\/+$/, "");
   var POLL_INTERVAL = 10000;
   var RELOAD_INTERVAL = 30 * 60 * 1000;
   var IMAGE_ROTATION_INTERVAL = 30000;

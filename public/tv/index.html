@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="icon" type="image/png" href="./favicon-senai.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Painel SENAI TV</title>
+  </head>
+  <body>
+    <div class="tv-app" id="app">
+      <header class="topbar">
+        <div class="topbar__section topbar__section--left">
+          <button class="turno-btn" data-turno="matutino" type="button">
+            Matutino
+          </button>
+          <button class="turno-btn" data-turno="vespertino" type="button">
+            Vespertino
+          </button>
+          <button class="turno-btn" data-turno="noturno" type="button">
+            Noturno
+          </button>
+          <span class="mode-badge" id="modeBadge">Turno automatico</span>
+        </div>
+
+        <div class="topbar__section topbar__section--center">
+          <img class="brand-logo" src="./logo_senai.svg" alt="SENAI" />
+        </div>
+
+        <div class="topbar__section topbar__section--right">
+          <div class="datetime-card">
+            <span class="datetime-label">Data Atual</span>
+            <strong class="datetime-value" id="currentDate">--/--/----</strong>
+          </div>
+          <div class="datetime-card">
+            <span class="datetime-label">Hora Atual</span>
+            <strong class="datetime-value" id="currentTime">--:--</strong>
+          </div>
+          <button class="info-button" type="button" id="toggleInfo">Info</button>
+        </div>
+      </header>
+
+      <div class="status-bar">
+        <span class="status-pill status-pill--online" id="apiStatus">Online</span>
+        <span class="status-text" id="statusMessage">Sincronizando dados...</span>
+      </div>
+
+      <main class="content">
+        <section class="tables-area" id="tablesArea">
+          <article class="table-card" id="tableCardLeft">
+            <div class="table-scroll">
+              <table class="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Turmas</th>
+                    <th>Espaco de aula</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBodyLeft"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="table-card" id="tableCardRight">
+            <div class="table-scroll">
+              <table class="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>Turmas</th>
+                    <th>Espaco de aula</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBodyRight"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <aside class="media-panel">
+          <div class="media-card">
+            <div class="media-stage" id="mediaStage">
+              <div class="media-empty" id="mediaEmpty">Nenhum anuncio ativo</div>
+            </div>
+          </div>
+
+          <section class="qr-card" id="qrCard" hidden>
+            <img src="./qrcodeSenai.png" alt="QR Code SENAI" />
+            <h2>Acompanhe em tempo real</h2>
+            <p>Escaneie o QR Code</p>
+            <span class="qr-card__signature">
+              Desenvolvido por Isaque Portugal | Turma DDS-4
+            </span>
+          </section>
+        </aside>
+      </main>
+
+      <div class="empty-state" id="tableFallback" hidden>
+        <h2>Dados temporariamente indisponiveis</h2>
+        <p>A tela continua ativa e tentara sincronizar novamente em alguns segundos.</p>
+      </div>
+    </div>
+
+    <aside class="info-drawer" id="infoDrawer" aria-hidden="true">
+      <div class="info-drawer__header">
+        <h2>Informacoes do Sistema</h2>
+        <button type="button" id="closeInfo">x</button>
+      </div>
+      <div class="info-drawer__card">
+        <span class="info-label">Ultima atualizacao</span>
+        <strong id="lastUpdateText">Aguardando dados...</strong>
+      </div>
+      <div class="info-drawer__card">
+        <span class="info-label">Conectividade</span>
+        <strong id="drawerStatus">API online</strong>
+      </div>
+      <div class="info-drawer__card">
+        <span class="info-label">Auto reload</span>
+        <strong id="reloadCountdown">30m restantes</strong>
+      </div>
+    </aside>
+    <div class="drawer-overlay" id="drawerOverlay" hidden></div>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>

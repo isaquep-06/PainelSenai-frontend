@@ -31,6 +31,11 @@ export const DivTudo = styled.div`
   flex: 1;
   height: 100%;
   min-height: 0;
+  min-width: 0;
+
+  @media (max-width: 1100px) {
+    height: auto;
+  }
 `;
 
 export const TableWrapper = styled.div`
@@ -38,8 +43,18 @@ export const TableWrapper = styled.div`
   height: 100%;
   min-height: 0;
   background-color: white;
-  overflow: hidden;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: auto;
+  border-radius: 24px;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+
+  @media (max-width: 1100px) {
+    height: auto;
+    max-height: min(70vh, 560px);
+  }
 `;
 
 export const Table = styled.table`
@@ -47,7 +62,9 @@ export const Table = styled.table`
   height: 100%;
   border-collapse: collapse;
   font-family: "Inter", sans-serif;
-  table-layout: fixed;
+  table-layout: auto;
+  min-width: ${({ "data-has-actions": hasActions }) =>
+    hasActions ? "440px" : "360px"};
 `;
 
 export const Thead = styled.thead`
@@ -107,8 +124,7 @@ export const Tbody = styled.tbody`
     border-bottom: 1px solid #d1d5db;
     line-height: 1.05;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    min-width: 0;
   }
 
   th {
@@ -118,6 +134,12 @@ export const Tbody = styled.tbody`
 
   td {
     color: #374151;
+  }
+
+  .td-turma,
+  td:nth-child(2) {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .td-action {
@@ -167,5 +189,13 @@ export const Tbody = styled.tbody`
     width: 18px;
     height: 18px;
     font-size: 0.62rem;
+  }
+
+  @media (max-width: 768px) {
+    th,
+    td {
+      font-size: 0.76rem;
+      padding: 7px 8px;
+    }
   }
 `;

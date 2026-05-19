@@ -94,12 +94,7 @@ function Dashboard() {
 
   function checkMobile() {
     const width = window.innerWidth;
-
-    const isTouchDevice =
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0;
-
-    return width <= 900 && isTouchDevice;
+    return width <= 1100;
   }
 
   const [isMobile, setIsMobile] = useState(checkMobile());

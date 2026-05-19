@@ -20,7 +20,7 @@ export default function NavBarForm({ mode, setMode, name }) {
   };
 
   const irParaTV = () => {
-    navigate('/dashboard');
+    window.location.assign('/tv/index.html');
   };
 
   return (

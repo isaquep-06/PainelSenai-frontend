@@ -25,7 +25,7 @@ export default function NavBarAdmin() {
         break;
 
       case 'tv':
-        navigate('/dashboard')
+        window.location.assign('/tv/index.html')
         break;
     }
   }

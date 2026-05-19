@@ -4,6 +4,7 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import Login from "../pages/login/index.jsx";
 import Dashboard from "../pages/dashboard/index.jsx";
 import PageError from "../pages/error/index.jsx";
+import TvRedirect from "../pages/tvRedirect/index.jsx";
 
 // Private routes
 import PrivateRoute from "./privateRoutes.jsx";
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <Dashboard />
+  },
+  {
+    path: "/tv",
+    element: <TvRedirect />
   },
   {
     path: "/dashboard-admin",

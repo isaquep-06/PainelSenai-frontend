@@ -20,7 +20,7 @@ function TableDashboard({
   return (
     <DivTudo data-density={compactScale}>
       <TableWrapper data-density={compactScale}>
-        <Table>
+        <Table data-has-actions={showActions}>
           <Thead>
             <tr>
               <th>Turmas</th>

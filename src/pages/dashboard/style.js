@@ -8,6 +8,7 @@ export const Body = styled.div`
   height: 100vh;
   overflow: hidden;
   overflow-x: hidden;
+  min-width: 0;
 
   background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
   display: flex;
@@ -15,7 +16,9 @@ export const Body = styled.div`
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   @media (max-width: 640px) {
+    height: auto;
     min-height: 100vh;
+    overflow-y: auto;
   }
 `;
 
@@ -100,6 +103,7 @@ export const MainContent = styled.div`
   overflow: hidden;
   align-items: stretch;
   min-height: 0;
+  min-width: 0;
 
   @media (max-width: 1280px) {
     padding: 16px 20px;
@@ -110,18 +114,21 @@ export const MainContent = styled.div`
     flex-direction: column;
     gap: 24px;
     padding: 16px;
-    min-height: 0;
+    min-height: auto;
+    overflow: visible;
   }
 
   @media (max-width: 768px) {
     padding: 14px;
     gap: 16px;
+    overflow: visible;
   }
 
   @media (max-width: 640px) {
     padding: 10px;
     gap: 12px;
-    min-height: 0;
+    min-height: auto;
+    overflow: visible;
   }
 `;
 
@@ -146,20 +153,23 @@ export const TablesContainer = styled.div`
   @media (max-width: 1200px) {
     flex-direction: column;
     gap: 5px;
-    overflow: hidden;
+    overflow: visible;
   }
 
   @media (max-width: 1024px) {
     gap: 5px;
+    overflow: visible;
   }
 
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 5px;
+    overflow: visible;
   }
 
   @media (max-width: 640px) {
     gap: 5px;
+    overflow: visible;
   }
 `;
 
@@ -173,22 +183,26 @@ export const RightSide = styled.div`
   gap: 20px;
   min-width: 280px;
   min-height: 0;
+  overflow: hidden;
 
   @media (max-width: 1024px) {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
     min-height: 0;
+    min-width: 0;
   }
 
   @media (max-width: 768px) {
     gap: 16px;
+    overflow: visible;
   }
 
   @media (max-width: 640px) {
     flex-direction: column;
     gap: 12px;
     min-width: 100%;
+    overflow: visible;
   }
 `;
 
@@ -228,16 +242,19 @@ export const VideoContainer = styled.div`
   @media (max-width: 1024px) {
     border-radius: 20px;
     min-height: 220px;
+    height: 320px;
   }
 
   @media (max-width: 768px) {
     border-radius: 16px;
     min-height: 220px;
+    height: 260px;
   }
 
   @media (max-width: 640px) {
     border-radius: 12px;
     min-height: 180px;
+    height: 220px;
   }
 `;
 

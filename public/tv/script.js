@@ -9,6 +9,11 @@
   var RELOAD_INTERVAL = 30 * 60 * 1000;
   var IMAGE_ROTATION_INTERVAL = 30000;
   var RESIZE_BREAKPOINT = 1180;
+  var GA_MEASUREMENT_ID =
+    window.__PAINEL_GA_MEASUREMENT_ID__ || "G-GELPBKTEQS";
+  var PRESENCE_HEARTBEAT_INTERVAL = 15000;
+  var PRESENCE_TTL = 45000;
+  var PRESENCE_STORAGE_KEY = "PainelSenai:tvPresence";
 
   var state = {
     turno: getCurrentTurno(),
@@ -26,10 +31,13 @@
     countdownTimer: 0,
     mediaTimer: 0,
     resizeTimer: 0,
+    presenceTimer: 0,
     reloadAt: Date.now() + RELOAD_INTERVAL,
     lastKnownLayout: "",
     lastMediaKey: "",
     lastUpdateText: "Aguardando dados...",
+    sessionId: createSessionId(),
+    activeViewers: 1,
     offline: false,
     initialized: false,
   };
@@ -40,7 +48,9 @@
     modeBadge: document.getElementById("modeBadge"),
     apiStatus: document.getElementById("apiStatus"),
     statusMessage: document.getElementById("statusMessage"),
+    viewerCounter: document.getElementById("viewerCounter"),
     drawerStatus: document.getElementById("drawerStatus"),
+    presenceText: document.getElementById("presenceText"),
     lastUpdateText: document.getElementById("lastUpdateText"),
     reloadCountdown: document.getElementById("reloadCountdown"),
     tablesArea: document.getElementById("tablesArea"),
@@ -71,12 +81,16 @@
     renderMode();
     renderTurnoButtons();
     updateReloadCountdown();
+    initializeAnalytics();
+    trackTvPageView();
+    updatePresence();
     renderTableRows([], els.tableBodyLeft);
     renderTableRows([], els.tableBodyRight);
     scheduleClock();
     scheduleTurnoCheck();
     scheduleReload();
     scheduleCountdown();
+    schedulePresence();
     fetchCycle(true);
   }
 
@@ -94,6 +108,8 @@
     window.addEventListener("error", onGlobalError, false);
     window.addEventListener("unhandledrejection", onUnhandledRejection, false);
     window.addEventListener("beforeunload", cleanupBeforeUnload, false);
+    window.addEventListener("pagehide", cleanupPresence, false);
+    window.addEventListener("storage", onPresenceStorageChange, false);
   }
 
   function onTurnoClick(event) {
@@ -177,6 +193,11 @@
     state.pollTimer = window.setTimeout(function () {
       fetchCycle(false);
     }, POLL_INTERVAL);
+  }
+
+  function schedulePresence() {
+    clearInterval(state.presenceTimer);
+    state.presenceTimer = window.setInterval(updatePresence, PRESENCE_HEARTBEAT_INTERVAL);
   }
 
   function fetchCycle(forceStatusMessage) {
@@ -619,6 +640,43 @@
     }
   }
 
+  function updatePresence() {
+    var registry = prunePresenceRegistry(readPresenceRegistry());
+
+    upsertPresenceEntry(registry, {
+      id: state.sessionId,
+      ts: Date.now(),
+      path: window.location.pathname,
+    });
+
+    writePresenceRegistry(registry);
+    renderPresence(registry.length);
+  }
+
+  function onPresenceStorageChange(event) {
+    if (event.key && event.key !== PRESENCE_STORAGE_KEY) {
+      return;
+    }
+
+    renderPresence(prunePresenceRegistry(readPresenceRegistry()).length || 1);
+  }
+
+  function cleanupPresence() {
+    var registry = readPresenceRegistry().filter(function (entry) {
+      return entry && entry.id && entry.id !== state.sessionId;
+    });
+
+    writePresenceRegistry(prunePresenceRegistry(registry));
+  }
+
+  function renderPresence(count) {
+    var safeCount = Math.max(1, count || 1);
+
+    state.activeViewers = safeCount;
+    els.viewerCounter.textContent = "Acessos ativos: " + safeCount;
+    els.presenceText.textContent = "Acessos ativos nesta origem: " + safeCount;
+  }
+
   function updateReloadCountdown() {
     var remaining = Math.max(0, state.reloadAt - Date.now());
     var minutes = Math.floor(remaining / 60000);
@@ -627,8 +685,58 @@
       minutes + "m " + String(seconds).padStart(2, "0") + "s restantes";
   }
 
+  function initializeAnalytics() {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (!window.dataLayer) {
+      window.dataLayer = [];
+    }
+
+    if (typeof window.gtag !== "function") {
+      window.gtag = function gtagFallback() {
+        window.dataLayer.push(arguments);
+      };
+      devLog("gtag indisponivel; fallback local ativado");
+    }
+
+    if (!window.__PAINEL_GA_CONFIGURED__) {
+      window.gtag("js", new Date());
+      window.gtag("config", GA_MEASUREMENT_ID, {
+        send_page_view: false,
+        transport_type: "beacon",
+      });
+      window.__PAINEL_GA_CONFIGURED__ = true;
+    }
+  }
+
+  function trackTvPageView() {
+    var pagePath = window.location.pathname + window.location.search + window.location.hash;
+    var eventKey = pagePath + "|" + document.title + "|" + window.location.href;
+
+    if (window.__PAINEL_TV_LAST_GA_PAGE_VIEW__ === eventKey) {
+      devLog("page_view duplicado ignorado", eventKey);
+      return;
+    }
+
+    if (typeof window.gtag !== "function") {
+      devLog("page_view ignorado; gtag nao carregado");
+      return;
+    }
+
+    window.__PAINEL_TV_LAST_GA_PAGE_VIEW__ = eventKey;
+    window.gtag("event", "page_view", {
+      page_title: document.title || "Painel SENAI TV",
+      page_path: pagePath,
+      page_location: window.location.href,
+    });
+    devLog("page_view enviado", { page_path: pagePath });
+  }
+
   async function reloadPageSafely() {
     cleanupTimers();
+    cleanupPresence();
 
     if (state.controller) {
       state.controller.abort();
@@ -703,6 +811,7 @@
 
   function cleanupBeforeUnload() {
     cleanupTimers();
+    cleanupPresence();
 
     if (state.controller) {
       state.controller.abort();
@@ -717,6 +826,7 @@
     clearInterval(state.clockTimer);
     clearInterval(state.turnoTimer);
     clearInterval(state.countdownTimer);
+    clearInterval(state.presenceTimer);
   }
 
   function clearMediaNode() {
@@ -787,6 +897,64 @@
       }
     }
     return -1;
+  }
+
+  function readPresenceRegistry() {
+    try {
+      var raw = localStorage.getItem(PRESENCE_STORAGE_KEY);
+      var parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function writePresenceRegistry(registry) {
+    try {
+      localStorage.setItem(PRESENCE_STORAGE_KEY, JSON.stringify(registry));
+    } catch (error) { }
+  }
+
+  function prunePresenceRegistry(registry) {
+    var now = Date.now();
+
+    return registry.filter(function (entry) {
+      return entry && entry.id && typeof entry.ts === "number" && now - entry.ts <= PRESENCE_TTL;
+    });
+  }
+
+  function upsertPresenceEntry(registry, entry) {
+    var index;
+
+    for (index = 0; index < registry.length; index += 1) {
+      if (registry[index] && registry[index].id === entry.id) {
+        registry[index] = entry;
+        return;
+      }
+    }
+
+    registry.push(entry);
+  }
+
+  function createSessionId() {
+    return "tv-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
+  }
+
+  function devLog(message, payload) {
+    var isDevHost =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+
+    if (!isDevHost) {
+      return;
+    }
+
+    if (payload !== undefined) {
+      console.info("[GA4 TV] " + message, payload);
+      return;
+    }
+
+    console.info("[GA4 TV] " + message);
   }
 
   init();

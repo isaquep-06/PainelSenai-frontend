@@ -1,10 +1,14 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  createBrowserRouter,
+} from "react-router-dom";
 
 //Pages
 import Login from "../pages/login/index.jsx";
 import Dashboard from "../pages/dashboard/index.jsx";
 import PageError from "../pages/error/index.jsx";
 import TvRedirect from "../pages/tvRedirect/index.jsx";
+import AppShell from "../components/AppShell.jsx";
 
 // Private routes
 import PrivateRoute from "./privateRoutes.jsx";
@@ -16,39 +20,45 @@ import AnuncioPage from "../pages/anuncio/index.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/dashboard" replace />
-  },
-  {
-    path: "/login",
-    element: <Login />
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />
-  },
-  {
-    path: "/tv",
-    element: <TvRedirect />
-  },
-  {
-    path: "/dashboard-admin",
-    element: <PrivateRoute><DashboardAdmin /></PrivateRoute>
-  },
-  {
-    path: "/atualizar-turmas",
-    element: <PrivateRoute><TurmaPage /></PrivateRoute>
-  },
-  {
-    path: "/atualizar-salas",
-    element: <PrivateRoute><SalaPage /></PrivateRoute>
-  },
-  {
-    path: "/atualizar-anuncio",
-    element: <PrivateRoute><AnuncioPage /></PrivateRoute>
-  },
-  {
-    path: "*",
-    element: <PageError />
+    element: <AppShell />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/dashboard" replace />
+      },
+      {
+        path: "login",
+        element: <Login />
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />
+      },
+      {
+        path: "tv",
+        element: <TvRedirect />
+      },
+      {
+        path: "dashboard-admin",
+        element: <PrivateRoute><DashboardAdmin /></PrivateRoute>
+      },
+      {
+        path: "atualizar-turmas",
+        element: <PrivateRoute><TurmaPage /></PrivateRoute>
+      },
+      {
+        path: "atualizar-salas",
+        element: <PrivateRoute><SalaPage /></PrivateRoute>
+      },
+      {
+        path: "atualizar-anuncio",
+        element: <PrivateRoute><AnuncioPage /></PrivateRoute>
+      },
+      {
+        path: "*",
+        element: <PageError />
+      }
+    ]
   }
 ]);
 

@@ -46,7 +46,6 @@ export const TableWrapper = styled.div`
   min-width: 0;
   overflow-x: auto;
   overflow-y: auto;
-  border-radius: 24px;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
@@ -73,7 +72,7 @@ export const Thead = styled.thead`
   height: 1px;
 
   th {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     padding: 8px 10px;
     text-align: left;
   }
@@ -120,7 +119,7 @@ export const Tbody = styled.tbody`
   th,
   td {
     padding: 5px 8px;
-    font-size: 0.82rem;
+    font-size: 0.95rem;
     border-bottom: 1px solid #d1d5db;
     line-height: 1.05;
     white-space: nowrap;
@@ -134,6 +133,7 @@ export const Tbody = styled.tbody`
 
   td {
     color: #374151;
+    font-size: 0.95rm;
   }
 
   .td-turma,

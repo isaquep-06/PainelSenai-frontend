@@ -863,25 +863,6 @@
     }
   }
 
-  function reloadPageSafely() {
-    cleanupTimers();
-    cleanupPresence();
-
-    if (state.controller) {
-      state.controller.abort();
-      state.controller = null;
-    }
-
-    clearMediaNode();
-    closeDrawer();
-
-    window.setTimeout(function () {
-      window.location.replace(
-        window.location.pathname + "?tv-refresh=" + Date.now()
-      );
-    }, 150);
-  }
-
   function cleanupTimers() {
     clearTimeout(state.pollTimer);
     clearTimeout(state.reloadTimer);
@@ -894,15 +875,6 @@
   }
 
   function clearMediaNode() {
-    state.mediaLoadToken += 1;
-    resetVideoNode();
-    els.mediaImage.classList.remove("is-visible");
-    els.mediaImage.removeAttribute("src");
-    els.mediaVideo.classList.remove("is-visible");
-    els.mediaEmpty.hidden = false;
-  }
-
-  function clearMediaNodeLegacy() {
     var node = els.mediaStage.querySelector("video, img");
     if (node && node.tagName === "VIDEO") {
       node.pause();
@@ -910,30 +882,6 @@
       node.load();
     }
     els.mediaStage.innerHTML = "";
-  }
-
-  function resetVideoNode() {
-    els.mediaVideo.pause();
-    els.mediaVideo.removeAttribute("src");
-    els.mediaVideo.onloadeddata = null;
-    els.mediaVideo.onended = null;
-    els.mediaVideo.onerror = null;
-    els.mediaVideo.load();
-  }
-
-  function safePlayVideo() {
-    var playPromise = els.mediaVideo.play();
-
-    if (playPromise && typeof playPromise.catch === "function") {
-      playPromise.catch(function () {
-        advanceMedia();
-      });
-    }
-  }
-
-  function toggleQrCard(shouldShow) {
-    els.qrCard.classList.toggle("is-visible", shouldShow);
-    els.qrCard.setAttribute("aria-hidden", shouldShow ? "false" : "true");
   }
 
   function getLayoutMode() {

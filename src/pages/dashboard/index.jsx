@@ -591,50 +591,44 @@ function Dashboard() {
             <TableDashboard
               data={sortedData}
               showActions={isLoggedIn}
-              onSelectRow={
-                handleSelectRow
-              }
+              onSelectRow={handleSelectRow}
             />
           ) : (
             <>
               <TableDashboard
                 data={tabelaEsquerda}
                 showActions={isLoggedIn}
-                onSelectRow={
-                  handleSelectRow
-                }
+                onSelectRow={handleSelectRow}
               />
 
               <TableDashboard
                 data={tabelaDireita}
                 showActions={isLoggedIn}
-                onSelectRow={
-                  handleSelectRow
-                }
+                onSelectRow={handleSelectRow}
               />
             </>
           )}
         </S.TablesContainer>
 
-        <S.RightSide>
-          <S.VideoContainer>
-            {midias.length > 0 ? (
-              <Anuncio
-                midia={
-                  midias[indexMidia]
-                }
-                onNext={nextMidia}
-              />
-            ) : (
-              <span>
-                Nenhum anuncio ativo
-              </span>
-            )}
-          </S.VideoContainer>
-        </S.RightSide>
+        {!isMobile && (
+          <S.RightSide>
+            <S.VideoContainer>
+              {midias.length > 0 ? (
+                <Anuncio
+                  midia={midias[indexMidia]}
+                  onNext={nextMidia}
+                />
+              ) : (
+                <span>
+                  Nenhum anuncio ativo
+                </span>
+              )}
+            </S.VideoContainer>
+          </S.RightSide>
+        )}
       </S.MainContent>
 
-      {!isMobile && sortedData.length <= 16 && <QRCode />}
+      {!isMobile && <QRCode />}
 
       <Sidebar
         isOpen={isSidebarOpen}

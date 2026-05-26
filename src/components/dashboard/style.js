@@ -169,7 +169,7 @@ export const Tbody = styled.tbody`
   ${TableWrapper}[data-density="compact"] & th,
   ${TableWrapper}[data-density="compact"] & td {
     padding: 4px 7px;
-    font-size: 0.75rem;
+    font-size: 0.95rem;
   }
 
   ${TableWrapper}[data-density="compact"] & .action-button {

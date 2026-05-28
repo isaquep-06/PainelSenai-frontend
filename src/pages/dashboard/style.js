@@ -325,7 +325,7 @@ export const QrContainer = styled.div`
     }
 
     h2 {
-      font-size: 0.95rem;
+      font-size: 1.1rem;
     }
 
     p {

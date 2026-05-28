@@ -349,7 +349,7 @@ export const StyledTable = styled.div`
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     min-width: 320px; // 👈 reduzido de 400px para caber sem zoom
   }
 

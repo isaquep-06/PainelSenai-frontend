@@ -133,7 +133,7 @@ export const Tbody = styled.tbody`
 
   td {
     color: #374151;
-    font-size: 0.95rm;
+    font-size: 1.1rem;
   }
 
   .td-turma,
@@ -178,10 +178,15 @@ export const Tbody = styled.tbody`
     font-size: 0.72rem;
   }
 
-  ${TableWrapper}[data-density="dense"] & th,
-  ${TableWrapper}[data-density="dense"] & td {
+  ${TableWrapper}[data-density="dense"] & th {
     padding: 3px 6px;
     font-size: 0.68rem;
+    line-height: 1;
+  }
+
+  ${TableWrapper}[data-density="dense"] & td {
+    padding: 3px 6px;
+    font-size: 1.1rem;
     line-height: 1;
   }
 
@@ -192,9 +197,13 @@ export const Tbody = styled.tbody`
   }
 
   @media (max-width: 768px) {
-    th,
-    td {
+    th {
       font-size: 0.76rem;
+      padding: 7px 8px;
+    }
+
+    td {
+      font-size: 1.1rem;
       padding: 7px 8px;
     }
   }
